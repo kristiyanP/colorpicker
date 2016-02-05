@@ -1,5 +1,5 @@
-ColorPicker[![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)
-
+#ColorPicker   [![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)
+#
 A simple Android color picker library
 
 ![Screenshot 2016-02-03 16.30.55.png](https://bitbucket.org/repo/aq7rG5/images/1548337619-Screenshot%202016-02-03%2016.30.55.png)
