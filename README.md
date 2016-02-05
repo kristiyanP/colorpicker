@@ -67,7 +67,9 @@ setButtonMargin(int left, int top, int right, int bottom);
 setRoundButton(boolean roundButton);
 ```
 
-
+## Additional Credits ##
+for the Material Dialog library incorporated in the code
+  [https://github.com/drakeet/MaterialDialog](https://github.com/drakeet/MaterialDialog)
 
 
 ## License ##
