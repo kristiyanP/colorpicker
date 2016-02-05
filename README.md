@@ -12,14 +12,14 @@ Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.krist
 
 ```
 
-#!gradle
+
 compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.1'
 
 ```
 or Maven:
 
 ```
-#!maven
+
 
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
@@ -30,7 +30,7 @@ or Maven:
 ## How to use ##
 
 ```
-#!java
+
   ColorPicker colorPicker = new ColorPicker(activity);
   colorPicker.show();
   colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
@@ -46,7 +46,7 @@ or Maven:
 Choose your own colors
 
 ```
-#!java
+
 setColors(int resId); // using an array resource
 setColors(ArrayList<String> colorsHexList); // using a list of hex colors
 setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
@@ -55,7 +55,7 @@ setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
 General changes you can do:
 
 ```
-#!java
+
 
 setColumns(int c);
 setTitle(String title);
@@ -69,7 +69,7 @@ setNegativeButtonText(String text);
 Buttons changes you can do:
 
 ```
-#!java
+
 
 setButtonsTickColor(int color);
 setButtonDrawable(int drawable);
