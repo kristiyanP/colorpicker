@@ -17,6 +17,19 @@ import me.drakeet.materialdialog.MaterialDialog;
 
 public class ColorPicker {
 
+
+    private OnChooseColorListener onChooseColorListener;
+
+    public interface OnChooseColorListener {
+        void onChooseColor(int position,int color);
+    }
+    // ALLOWS YOU TO SET LISTENER && INVOKE THE OVERIDING METHOD
+    // FROM WITHIN ACTIVITY
+    public void setOnChooseColorListener(OnChooseColorListener listener) {
+        onChooseColorListener = listener;
+    }
+
+
     private ArrayList<ColorPal> colors;
     private ColorViewAdapter colorViewAdapter;
     private int position = 0;
@@ -30,7 +43,7 @@ public class ColorPicker {
     private int marginButtonLeft, marginButtonRight, marginButtonTop, marginButtonBottom;
     private int buttonWidth, buttonHeight;
     private int buttonDrawable;
-    private String negativeText = "OK", positiveText = "CANCEL";
+    private String negativeText = "CANCEL", positiveText = "OK";
     private boolean roundButton;
     private ArrayList<Drawable> drawables;
     private ArrayList<ImageView> images;
@@ -171,7 +184,8 @@ public class ColorPicker {
                 .setPositiveButton(positiveText, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        position = colorViewAdapter.getSelectedColor();
+                        position = colorViewAdapter.getColorPosition();
+                        onChooseColorListener.onChooseColor(colorViewAdapter.getColorPosition(),colorViewAdapter.getColorSelected());
                         mMaterialDialog.dismiss();
                     }
                 })
@@ -182,22 +196,6 @@ public class ColorPicker {
                     }
                 }).setView(view);
         mMaterialDialog.show();
-    }
-
-    /**
-     * Get the selected color
-     * @return color
-     */
-    public int getColorSelected() {
-        return ta.getColor(position, 0);
-    }
-
-    /**
-     * Get the selected position
-     * @return position
-     */
-    public int getColorPosition(){
-        return position;
     }
 
     /**

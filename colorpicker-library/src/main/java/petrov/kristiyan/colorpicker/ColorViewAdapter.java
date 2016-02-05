@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.ViewHolder> {
 
     private ArrayList<ColorPal> mDataset;
-    private int selected = -1;
+    private int colorPosition = -1;
+    private int colorSelected;
     private View v;
     private int gravity = Gravity.CENTER;
     private int marginLeft, marginRight, marginTop, marginBottom;
@@ -55,18 +56,23 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
         @Override
         public void onClick(View v) {
-            if (selected != -1 && selected != getLayoutPosition()) {
-                mDataset.get(selected).check = false;
-                notifyItemChanged(selected);
+            if (colorPosition != -1 && colorPosition != getLayoutPosition()) {
+                mDataset.get(colorPosition).check = false;
+                notifyItemChanged(colorPosition);
             }
-            selected = getLayoutPosition();
+            colorPosition = getLayoutPosition();
+            colorSelected = (int)v.getTag();
             mDataset.get(getLayoutPosition()).check = true;
-            notifyItemChanged(selected);
+            notifyItemChanged(colorPosition);
         }
     }
 
-    public int getSelectedColor() {
-        return selected;
+    public int getColorSelected() {
+        return colorSelected;
+    }
+
+    public int getColorPosition() {
+        return colorPosition;
     }
 
     public ColorViewAdapter(ArrayList<ColorPal> myDataset) {
@@ -92,6 +98,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         }else {
             holder.colorItem.setBackgroundColor(mDataset.get(position).color);
         }
+        holder.colorItem.setTag(mDataset.get(position).color);
 
     }
 
