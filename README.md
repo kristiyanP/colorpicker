@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)
+#ColorPicker#[![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)
 
 A simple Android color picker library
 
@@ -75,6 +75,8 @@ for the Material Dialog library incorporated in the code
 ## License ##
 
 The MIT License
+
+Copyright (c) 2016 Petrov Kristiyan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
