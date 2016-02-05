@@ -33,8 +33,12 @@ or Maven:
 #!java
   ColorPicker colorPicker = new ColorPicker(activity);
   colorPicker.show();
-  int color = colorPicker.getColorSelected();
-  int positionColorSelected = colorPicker.getColorPosition();
+  colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+      @Override
+      public void onChooseColor(int position,int color) {
+            //put code
+      }
+  });
 ```
 
 ## What you can do ##
