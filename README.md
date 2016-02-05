@@ -11,16 +11,11 @@ A simple Android color picker library
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```
-
-
 compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.1'
-
 ```
 or Maven:
 
 ```
-
-
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
@@ -30,7 +25,6 @@ or Maven:
 ## How to use ##
 
 ```
-
   ColorPicker colorPicker = new ColorPicker(activity);
   colorPicker.show();
   colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
@@ -46,7 +40,6 @@ or Maven:
 Choose your own colors
 
 ```
-
 setColors(int resId); // using an array resource
 setColors(ArrayList<String> colorsHexList); // using a list of hex colors
 setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
@@ -55,8 +48,6 @@ setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
 General changes you can do:
 
 ```
-
-
 setColumns(int c);
 setTitle(String title);
 setGravity(int gravity);
@@ -69,8 +60,6 @@ setNegativeButtonText(String text);
 Buttons changes you can do:
 
 ```
-
-
 setButtonsTickColor(int color);
 setButtonDrawable(int drawable);
 setButtonSize(int width, int height);
