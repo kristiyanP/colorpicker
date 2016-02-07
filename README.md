@@ -19,12 +19,14 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 ## How to use ##
 
 ```
+  Simple example : 
+  
   ColorPicker colorPicker = new ColorPicker(activity);
   colorPicker.show();
   colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
@@ -33,6 +35,17 @@ or Maven:
             //put code
       }
   });
+  
+  Complex example : 
+  
+  final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
+    colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
+      @Override
+      public void setOnFastChooseColorListner(int position, int color) {
+          //code
+        colorPicker.dismissDialog();
+      }
+    }).setColumns(5).show();
 ```
 
 ## What you can do ##
@@ -45,6 +58,13 @@ setColors(ArrayList<String> colorsHexList); // using a list of hex colors
 setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
 
 ```
+
+Listeners
+```
+setFastChooser(OnFastChooseColorListener listener);
+setOnChooseColorListener(OnChooseColorListener listener);
+```
+
 General changes you can do:
 
 ```
