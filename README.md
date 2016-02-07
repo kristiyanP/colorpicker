@@ -11,7 +11,7 @@ A simple Android color picker library
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```
-compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.2'
+compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.3'
 ```
 or Maven:
 
@@ -35,9 +35,9 @@ or Maven:
             //put code
       }
   });
-  
+```  
   Complex example : 
-  
+```  
   final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
     colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
       @Override
