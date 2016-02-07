@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.ViewHolder> {
 
+    private ColorPicker.OnFastChooseColorListener onFastChooseColorListener;
     private ArrayList<ColorPal> mDataset;
     private int colorPosition = -1;
     private int colorSelected;
@@ -63,6 +64,8 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
             colorPosition = getLayoutPosition();
             colorSelected = (int)v.getTag();
             mDataset.get(getLayoutPosition()).check = true;
+            if (onFastChooseColorListener != null )
+                onFastChooseColorListener.setOnFastChooseColorListner(colorPosition,colorSelected);
             notifyItemChanged(colorPosition);
         }
     }
@@ -75,9 +78,15 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         return colorPosition;
     }
 
+    public ColorViewAdapter(ArrayList<ColorPal> myDataset, ColorPicker.OnFastChooseColorListener onFastChooseColorListener) {
+        mDataset = myDataset;
+        this.onFastChooseColorListener = onFastChooseColorListener;
+    }
+
     public ColorViewAdapter(ArrayList<ColorPal> myDataset) {
         mDataset = myDataset;
     }
+
 
     @Override
     public ColorViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

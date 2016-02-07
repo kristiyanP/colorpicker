@@ -25,14 +25,14 @@ public class SampleActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
-                colorPicker.setColumns(3).show();
-                colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
+                colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
                     @Override
-                    public void onChooseColor(int pos,int color) {
-                        toolbar.setBackgroundColor(color);
+                    public void setOnFastChooseColorListner(int position, int color) {
+
+                        colorPicker.dismissDialog();
                     }
-                });
+                }).setColumns(5).show();
 
             }
         });

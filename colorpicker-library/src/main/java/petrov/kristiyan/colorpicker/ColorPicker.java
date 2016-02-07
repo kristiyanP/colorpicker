@@ -19,20 +19,29 @@ public class ColorPicker {
 
 
     private OnChooseColorListener onChooseColorListener;
+    private OnFastChooseColorListener onFastChooseColorListener;
+
+    public void setOnFastChooseColorListener(OnFastChooseColorListener listener) {
+        onFastChooseColorListener = listener;
+    }
 
     public interface OnChooseColorListener {
         void onChooseColor(int position,int color);
     }
-    // ALLOWS YOU TO SET LISTENER && INVOKE THE OVERIDING METHOD
-    // FROM WITHIN ACTIVITY
+
+    public interface OnFastChooseColorListener {
+        void setOnFastChooseColorListner(int position,int color);
+    }
+
     public void setOnChooseColorListener(OnChooseColorListener listener) {
         onChooseColorListener = listener;
     }
 
 
+
     private ArrayList<ColorPal> colors;
     private ColorViewAdapter colorViewAdapter;
-    private int position = 0;
+    private boolean fastChooser;
     private TypedArray ta;
     private Activity activity;
     private int columns;
@@ -47,6 +56,7 @@ public class ColorPicker {
     private boolean roundButton;
     private ArrayList<Drawable> drawables;
     private ArrayList<ImageView> images;
+    private MaterialDialog mMaterialDialog;
 
     /**
      * Constructor
@@ -141,11 +151,17 @@ public class ColorPicker {
             TextView titleView = (TextView) view.findViewById(R.id.title);
             titleView.setText(title);
         }
+        //create Material Dialog if posneg is not enabled
+        mMaterialDialog = new MaterialDialog(activity);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.color_palette);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, columns);
         recyclerView.setLayoutManager(gridLayoutManager);
-        colorViewAdapter = new ColorViewAdapter(colors);
+        if( fastChooser )
+            colorViewAdapter = new ColorViewAdapter(colors,onFastChooseColorListener);
+        else
+            colorViewAdapter = new ColorViewAdapter(colors);
+
         recyclerView.setAdapter(colorViewAdapter);
 
         if(drawables != null && drawables.size() != colors.size()){
@@ -178,23 +194,26 @@ public class ColorPicker {
         if (roundButton) {
             this.setButtonDrawable(R.drawable.round_button);
         }
-        //create Material Dialog
-        final MaterialDialog mMaterialDialog = new MaterialDialog(activity);
-        mMaterialDialog
-                .setPositiveButton(positiveText, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        position = colorViewAdapter.getColorPosition();
-                        onChooseColorListener.onChooseColor(colorViewAdapter.getColorPosition(),colorViewAdapter.getColorSelected());
-                        mMaterialDialog.dismiss();
-                    }
-                })
-                .setNegativeButton(negativeText, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mMaterialDialog.dismiss();
-                    }
-                }).setView(view);
+
+        if(!fastChooser) {
+            mMaterialDialog
+                    .setPositiveButton(positiveText, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onChooseColorListener.onChooseColor(colorViewAdapter.getColorPosition(), colorViewAdapter.getColorSelected());
+                            mMaterialDialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(negativeText, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mMaterialDialog.dismiss();
+                        }
+                    }).setView(view);
+        }
+        else{
+            mMaterialDialog.setView(view);
+        }
         mMaterialDialog.show();
     }
 
@@ -320,6 +339,25 @@ public class ColorPicker {
     public ColorPicker setRoundButton(boolean roundButton) {
         this.roundButton = roundButton;
         return this;
+    }
+
+    /**
+     * set a fast listener ( it shows a dialog without buttons and the event fires as soon you select a color )
+     * @param listener
+     * @return
+     */
+    public ColorPicker setFastChooser(OnFastChooseColorListener listener){
+        this.fastChooser = true;
+        this.onFastChooseColorListener = listener;
+        return this;
+    }
+
+    /**
+     * dismiss the dialog
+     */
+    public void dismissDialog(){
+        if(mMaterialDialog != null )
+        mMaterialDialog.dismiss();
     }
 
 }

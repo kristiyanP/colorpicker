@@ -13,12 +13,12 @@
     <color name="color7">#59BC10</color>
     <color name="color8">#E87034</color>
     <color name="color9">#f84c44</color>
-    <color name="color10">#5147FB</color>
+    <color name="color10">#8c47fb</color>
 
-    <color name="color13">#51C1EE</color>
+    <color name="color11">#51C1EE</color>
     <color name="color12">#8cc453</color>
-    <color name="color14">#C2987D</color>
-    <color name="color11">#CE7777</color>
+    <color name="color13">#C2987D</color>
+    <color name="color14">#CE7777</color>
     <color name="color15">#9086BA</color>
 
 </resources>
