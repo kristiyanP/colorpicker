@@ -24,9 +24,8 @@ or Maven:
 ```
 ## How to use ##
 
-```
   Simple example : 
-  
+```
   ColorPicker colorPicker = new ColorPicker(activity);
   colorPicker.show();
   colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
@@ -39,13 +38,13 @@ or Maven:
   Complex example : 
 ```  
   final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
-    colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
-      @Override
-      public void setOnFastChooseColorListner(int position, int color) {
-          //code
-        colorPicker.dismissDialog();
-      }
-    }).setColumns(5).show();
+  colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
+    @Override
+    public void setOnFastChooseColorListner(int position, int color) {
+        //code
+      colorPicker.dismissDialog();
+    }
+  }).setColumns(5).show();
 ```
 
 ## What you can do ##
