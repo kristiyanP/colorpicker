@@ -19,7 +19,7 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 ## How to use ##
