@@ -58,15 +58,16 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         @Override
         public void onClick(View v) {
             if (colorPosition != -1 && colorPosition != getLayoutPosition()) {
-                mDataset.get(colorPosition).check = false;
+                mDataset.get(colorPosition).setCheck(false);
                 notifyItemChanged(colorPosition);
             }
             colorPosition = getLayoutPosition();
             colorSelected = (int)v.getTag();
-            mDataset.get(getLayoutPosition()).check = true;
-            if (onFastChooseColorListener != null )
-                onFastChooseColorListener.setOnFastChooseColorListner(colorPosition,colorSelected);
+            mDataset.get(getLayoutPosition()).setCheck(true);
             notifyItemChanged(colorPosition);
+
+            if (onFastChooseColorListener != null )
+                onFastChooseColorListener.setOnFastChooseColorListener(colorPosition,colorSelected);
         }
     }
 
@@ -97,17 +98,17 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (mDataset.get(position).check)
+        if (mDataset.get(position).isCheck())
             holder.colorItem.setText("✔");
         else
             holder.colorItem.setText(" ");
         if(buttonDrawable != 0) {
-            ColorFilter cf = new PorterDuffColorFilter(mDataset.get(position).color, PorterDuff.Mode.MULTIPLY);
+            ColorFilter cf = new PorterDuffColorFilter(mDataset.get(position).getColor(), PorterDuff.Mode.MULTIPLY);
             holder.colorItem.getBackground().mutate().setColorFilter(cf);
         }else {
-            holder.colorItem.setBackgroundColor(mDataset.get(position).color);
+            holder.colorItem.setBackgroundColor(mDataset.get(position).getColor());
         }
-        holder.colorItem.setTag(mDataset.get(position).color);
+        holder.colorItem.setTag(mDataset.get(position).getColor());
 
     }
 
@@ -125,6 +126,16 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         this.marginLeft = left;
         this.marginRight = right;
         this.marginTop = top;
+    }
+
+    public void setDefaultColor(int color){
+        for( int i = 0; i < mDataset.size(); i++ ) {
+            ColorPal colorPal = mDataset.get(i);
+            if (colorPal.getColor() == color) {
+                colorPal.setCheck(true);
+                notifyItemChanged(i);
+            }
+        }
     }
 
     public void setButtonsTickColor(int color) {

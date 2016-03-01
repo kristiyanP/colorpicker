@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,14 +29,26 @@ public class SampleActivity extends AppCompatActivity {
                 final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
                 colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
                     @Override
-                    public void setOnFastChooseColorListner(int position, int color) {
-
+                    public void setOnFastChooseColorListener(int position, int color) {
                         colorPicker.dismissDialog();
                     }
-                }).setColumns(5).show();
+                }).setOnButtonListener(new ColorPicker.OnButtonListener() {
+                    @Override
+                    public void onPositiveClick(View v) {
+
+                        Log.d("Cancel","cancel");
+                    }
+
+                    @Override
+                    public void onNegativeClick(View v) {
+
+                        Log.d("DEFAULT","default");
+                    }
+                }).setNegativeButtonText("DEFAULT").setPositiveButtonText("CANCEL").setDefaultColor(Color.parseColor("#f84c44")).setDialogFullHeight().show();
 
             }
         });
+
     }
 
     @Override

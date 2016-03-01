@@ -19,7 +19,7 @@ android {
     }
 
 }
-version = "1.0.3"
+version = "1.0.4"
 group = 'petrov.kristiyan.colorpicker' // Change this to match your package name
 bintray {
     user = 'petrovkristiyan'
@@ -29,15 +29,15 @@ bintray {
         name = 'petrov.kristiyan.colorpicker'
 
         version {
-            name = '1.0.3'
+            name = '1.0.4'
             desc = 'A custom implementation of a dialog colorpicker'
-            vcsTag = '1.0.3'
+            vcsTag = '1.0.4'
 
         }
 
         licenses = ['MIT']
-        vcsUrl = 'https://bitbucket.org/petrov_kristiyan/colorpicker.git'
-        websiteUrl = 'https://bitbucket.org/petrov_kristiyan/colorpicker'
+        vcsUrl = 'https://github.com/kristiyanP/colorpicker.git'
+        websiteUrl = 'https://github.com/kristiyanP/colorpicker'
     }
     configurations = ['archives']
 }
@@ -46,7 +46,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'me.drakeet.materialdialog:library:1.2.8'
 
 
