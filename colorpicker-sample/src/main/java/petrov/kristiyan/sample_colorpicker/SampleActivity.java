@@ -32,20 +32,17 @@ public class SampleActivity extends AppCompatActivity {
                     public void setOnFastChooseColorListener(int position, int color) {
                         colorPicker.dismissDialog();
                     }
-                }).setOnButtonListener(new ColorPicker.OnButtonListener() {
+                }).setNegativeButton("DEFAULT",new ColorPicker.OnButtonListener() {
                     @Override
-                    public void onPositiveClick(View v) {
-
-                        Log.d("Cancel","cancel");
-                    }
-
-                    @Override
-                    public void onNegativeClick(View v) {
-
+                    public void onClick(View v) {
                         Log.d("DEFAULT","default");
                     }
-                }).setNegativeButtonText("DEFAULT").setPositiveButtonText("CANCEL").setDefaultColor(Color.parseColor("#f84c44")).setDialogFullHeight().show();
-
+                }).setPositiveButton("CANCEL", new ColorPicker.OnButtonListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("CANCEL","cancel");
+                    }
+                }).setDialogFullHeight().show();
             }
         });
 

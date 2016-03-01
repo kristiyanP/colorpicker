@@ -18,7 +18,7 @@ public class ColorPicker {
 
     private OnChooseColorListener onChooseColorListener;
     private OnFastChooseColorListener onFastChooseColorListener;
-    private OnButtonListener onButtonListener;
+    private OnButtonListener onNegativeButtonListener,onPositiveButtonListener;
 
     public interface OnChooseColorListener {
         void onChooseColor(int position,int color);
@@ -29,8 +29,7 @@ public class ColorPicker {
     }
 
     public interface OnButtonListener{
-        void onPositiveClick(View v);
-        void onNegativeClick(View v);
+        void onClick(View v);
     }
 
     private ArrayList<ColorPal> colors;
@@ -177,41 +176,37 @@ public class ColorPicker {
         if ( default_color != 0 ){
             colorViewAdapter.setDefaultColor(default_color);
         }
-
-        mMaterialDialog
+        if( !fastChooser || onNegativeButtonListener != null || onPositiveButtonListener != null ) {
+            mMaterialDialog
                     .setPositiveButton(positiveText, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                           if(!fastChooser)
+                            if (!fastChooser)
                                 onChooseColorListener.onChooseColor(colorViewAdapter.getColorPosition(), colorViewAdapter.getColorSelected());
-                            onButtonListener.onPositiveClick(v);
-                            if(dismiss)
+                            onPositiveButtonListener.onClick(v);
+                            if (dismiss)
                                 mMaterialDialog.dismiss();
                         }
                     })
                     .setNegativeButton(negativeText, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onButtonListener.onNegativeClick(v);
-                            if(dismiss)
+                            onNegativeButtonListener.onClick(v);
+                            if (dismiss)
                                 mMaterialDialog.dismiss();
                         }
                     }).setView(view);
+        }
+        else
+            mMaterialDialog.setView(view);
+
+
         mMaterialDialog.show();
         if(positiveText.isEmpty()){
             mMaterialDialog.getNegativeButton().setPadding(dip2px(12), 0, dip2px(32),0);
         }
     }
 
-    /**
-     * Listener for the negative and positive buttons
-     * @param listener
-     * @return
-     */
-    public ColorPicker setOnButtonListener(OnButtonListener listener){
-        onButtonListener = listener;
-        return this;
-    }
 
     /**
      * Define the number of columns by default value= 3
@@ -312,18 +307,20 @@ public class ColorPicker {
      * @param text text
      * @return this
      */
-    public ColorPicker setPositiveButtonText(String text) {
+    public ColorPicker setPositiveButton(String text,OnButtonListener listener) {
         this.positiveText = text;
+        this.onPositiveButtonListener = listener;
         return this;
     }
 
     /**
-     * Set title of the negative button in the Material Dialog
+     * Set the negative button in the Material Dialog usable also with fastChooser
      * @param text text
      * @return this
      */
-    public ColorPicker setNegativeButtonText(String text) {
+    public ColorPicker setNegativeButton(String text , OnButtonListener listener) {
         this.negativeText = text;
+        this.onNegativeButtonListener = listener;
         return this;
     }
 
