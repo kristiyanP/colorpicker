@@ -1,4 +1,5 @@
-#ColorPicker   [![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)
+#ColorPicker [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ColorPicker-green.svg?style=true)](https://android-arsenal.com/details/1/3121)  [![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)
+
 #
 A simple Android color picker library
 
@@ -10,12 +11,12 @@ A simple Android color picker library
 
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
-```
+```groovy
 compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.3'
 ```
 or Maven:
 
-```
+```xml
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
@@ -25,7 +26,7 @@ or Maven:
 ## How to use ##
 
   Simple example : 
-```
+```java
   ColorPicker colorPicker = new ColorPicker(activity);
   colorPicker.show();
   colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
@@ -36,7 +37,7 @@ or Maven:
   });
 ```  
   Complex example : 
-```  
+```java
   final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
   colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
     @Override
@@ -51,7 +52,7 @@ or Maven:
 
 Choose your own colors
 
-```
+```java
 setColors(int resId); // using an array resource
 setColors(ArrayList<String> colorsHexList); // using a list of hex colors
 setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
@@ -59,14 +60,14 @@ setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
 ```
 
 Listeners
-```
+```java
 setFastChooser(OnFastChooseColorListener listener);
 setOnChooseColorListener(OnChooseColorListener listener);
 ```
 
 General changes you can do:
 
-```
+```java
 setColumns(int c);
 setTitle(String title);
 setGravity(int gravity);
@@ -78,7 +79,7 @@ setNegativeButtonText(String text);
 
 Buttons changes you can do:
 
-```
+```java
 setButtonsTickColor(int color);
 setButtonDrawable(int drawable);
 setButtonSize(int width, int height);
