@@ -3,16 +3,18 @@
 #
 A simple Android color picker library
 
-![Screenshot 2016-02-03 16.30.55.png](https://bitbucket.org/repo/aq7rG5/images/1548337619-Screenshot%202016-02-03%2016.30.55.png)
+![screen1](https://raw.github.com/kristiyanP/colorpicker/master/screen1.png)
 
-![Screenshot 2016-02-03 16.31.48.png](https://bitbucket.org/repo/aq7rG5/images/3931860630-Screenshot%202016-02-03%2016.31.48.png)
+![screen2](https://raw.github.com/kristiyanP/colorpicker/master/screen2.png)
+
+![screen3](https://raw.github.com/kristiyanP/colorpicker/master/screen3.png)
 
 ## Download ##
 
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.3'
+compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.4'
 ```
 or Maven:
 
@@ -20,7 +22,7 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 </dependency>
 ```
 ## How to use ##
@@ -40,12 +42,21 @@ or Maven:
 ```java
   final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
   colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
-    @Override
-    public void setOnFastChooseColorListner(int position, int color) {
-        //code
-      colorPicker.dismissDialog();
-    }
-  }).setColumns(5).show();
+              @Override
+              public void setOnFastChooseColorListener(int position, int color) {
+                  colorPicker.dismissDialog();
+              }
+          }).setNegativeButton("DEFAULT",new ColorPicker.OnButtonListener() {
+              @Override
+              public void onClick(View v) {
+                  Log.d("DEFAULT","default");
+              }
+          }).setPositiveButton("CANCEL", new ColorPicker.OnButtonListener() {
+              @Override
+              public void onClick(View v) {
+                  Log.d("CANCEL","cancel");
+              }
+          }).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).setDialogFullHeight().show();
 ```
 
 ## What you can do ##
@@ -56,7 +67,7 @@ Choose your own colors
 setColors(int resId); // using an array resource
 setColors(ArrayList<String> colorsHexList); // using a list of hex colors
 setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
-
+setDefaultColor(int color);
 ```
 
 Listeners
@@ -68,12 +79,14 @@ setOnChooseColorListener(OnChooseColorListener listener);
 General changes you can do:
 
 ```java
+setDialogFullHeight();
 setColumns(int c);
 setTitle(String title);
-setGravity(int gravity);
+setTitlePadding(int left, int top, int right, int bottom);
 setMargin(int left, int top, int right, int bottom);
-setPositiveButtonText(String text);
-setNegativeButtonText(String text);
+setPositiveButton(String text, OnButtonListener listener);
+setNegativeButton(String text, OnButtonListener listener);
+setDismissOnButtonClick(boolean dismiss);
 ```
 
 
