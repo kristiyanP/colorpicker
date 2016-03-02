@@ -42,7 +42,7 @@ public class SampleActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Log.d("CANCEL","cancel");
                     }
-                }).setDialogFullHeight().show();
+                }).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).setRoundButton(true).show();
             }
         });
 

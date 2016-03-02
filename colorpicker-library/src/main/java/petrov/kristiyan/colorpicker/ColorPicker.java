@@ -2,8 +2,10 @@ package petrov.kristiyan.colorpicker;
 
 import android.app.Activity;
 import android.content.res.TypedArray;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -52,6 +54,7 @@ public class ColorPicker {
     private MaterialDialog mMaterialDialog;
     private RecyclerView recyclerView;
     private int default_color = 0;
+    private int paddingTitleLeft,paddingTitleRight,paddingTitleBottom,paddingTitleTop;
 
 
     /**
@@ -61,12 +64,13 @@ public class ColorPicker {
     public ColorPicker(Activity activity) {
         this.activity = activity;
         this.dismiss = true;
-        this.marginButtonLeft = 10;
-        this.marginButtonTop = 10;
-        this.marginButtonRight = 10;
-        this.marginButtonBottom = 10;
+        this.marginButtonLeft = this.marginButtonTop =  this.marginButtonRight = this.marginButtonBottom = dip2px(5);
         this.title ="Choose the color";
         this.columns = 5;
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int windowSize = metrics.widthPixels;
+        this.paddingTitleTop = this.paddingTitleBottom = this.paddingTitleLeft = this.paddingTitleRight = ( windowSize - ( columns * dip2px(5) + columns * dip2px(40) ) )/2 - (int)((windowSize * 0.25)/2);
     }
 
     /**
@@ -132,6 +136,7 @@ public class ColorPicker {
         TextView titleView = (TextView) view.findViewById(R.id.title);
         if (title != null) {
             titleView.setText(title);
+            titleView.setPadding(paddingTitleLeft,paddingTitleTop,paddingTitleRight,paddingTitleBottom);
         }
         //create Material Dialog if posneg is not enabled
         mMaterialDialog = new MaterialDialog(activity);
@@ -149,11 +154,9 @@ public class ColorPicker {
             lp.addRule(RelativeLayout.BELOW,titleView.getId());
             lp.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
             recyclerView.setLayoutParams(lp);
-        } recyclerView.setAdapter(colorViewAdapter);
-
-        if (gravity != Gravity.CENTER) {
-            colorViewAdapter.setGravity(gravity);
         }
+
+        recyclerView.setAdapter(colorViewAdapter);
 
         if (marginBottom != 0 || marginLeft != 0 || marginRight != 0 || marginTop != 0) {
             colorViewAdapter.setMargin(marginLeft, marginTop, marginRight, marginBottom);
@@ -167,15 +170,17 @@ public class ColorPicker {
         if (buttonHeight != 0 || buttonWidth != 0) {
             colorViewAdapter.setButtonSize(buttonWidth, buttonHeight);
         }
-        if (buttonDrawable != 0) {
-            colorViewAdapter.setButtonDrawable(buttonDrawable);
-        }
         if (roundButton) {
             this.setButtonDrawable(R.drawable.round_button);
         }
+        if (buttonDrawable != 0) {
+            colorViewAdapter.setButtonDrawable(buttonDrawable);
+        }
+
         if ( default_color != 0 ){
             colorViewAdapter.setDefaultColor(default_color);
         }
+
         if( !fastChooser || onNegativeButtonListener != null || onPositiveButtonListener != null ) {
             mMaterialDialog
                     .setPositiveButton(positiveText, new View.OnClickListener() {
@@ -392,9 +397,25 @@ public class ColorPicker {
      * dismiss the dialog
      */
     public void dismissDialog(){
-        if(mMaterialDialog != null )
-            mMaterialDialog.dismiss();
+        if(mMaterialDialog != null ) {
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    mMaterialDialog.dismiss();
+                }
+            };
+            handler.postDelayed(runnable,250);
+        }
     }
+    private ColorPicker setTitlePadding(int left, int top, int right, int bottom) {
+        paddingTitleLeft = left;
+        paddingTitleRight = right;
+        paddingTitleTop = top;
+        paddingTitleBottom = bottom;
+        return this;
+    }
+
     private int dip2px(float dpValue) {
         final float scale = activity.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);

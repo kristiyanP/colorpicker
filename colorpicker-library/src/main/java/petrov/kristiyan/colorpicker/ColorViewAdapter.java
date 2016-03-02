@@ -24,7 +24,6 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     private int colorPosition = -1;
     private int colorSelected;
     private View v;
-    private int gravity = Gravity.CENTER;
     private int marginLeft, marginRight, marginTop, marginBottom;
     private int tickColor = Color.WHITE;
     private int marginButtonLeft = 0, marginButtonRight = 0, marginButtonTop = 3, marginButtonBottom = 3;
@@ -50,7 +49,6 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
             //relative layout settings
             RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
-            relativeLayout.setGravity(gravity);
             GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) relativeLayout.getLayoutParams();
             lp.setMargins(marginLeft, marginTop, marginRight, marginBottom);
         }
@@ -117,9 +115,6 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         return mDataset.size();
     }
 
-    public void setGravity(int gravity) {
-        this.gravity = gravity;
-    }
 
     public void setMargin(int left, int top, int right, int bottom) {
         this.marginBottom = bottom;
@@ -133,6 +128,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
             ColorPal colorPal = mDataset.get(i);
             if (colorPal.getColor() == color) {
                 colorPal.setCheck(true);
+                colorPosition = i;
                 notifyItemChanged(i);
             }
         }
