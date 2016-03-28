@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.Surface;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,17 +21,17 @@ public class ColorPicker {
 
     private OnChooseColorListener onChooseColorListener;
     private OnFastChooseColorListener onFastChooseColorListener;
-    private OnButtonListener onNegativeButtonListener,onPositiveButtonListener;
+    private OnButtonListener onNegativeButtonListener, onPositiveButtonListener;
 
     public interface OnChooseColorListener {
-        void onChooseColor(int position,int color);
+        void onChooseColor(int position, int color);
     }
 
     public interface OnFastChooseColorListener {
-        void setOnFastChooseColorListener(int position,int color);
+        void setOnFastChooseColorListener(int position, int color);
     }
 
-    public interface OnButtonListener{
+    public interface OnButtonListener {
         void onClick(View v);
     }
 
@@ -41,7 +42,6 @@ public class ColorPicker {
     private Activity activity;
     private int columns;
     private String title;
-    private int gravity = Gravity.CENTER;
     private int marginLeft, marginRight, marginTop, marginBottom;
     private int tickColor;
     private int marginButtonLeft, marginButtonRight, marginButtonTop, marginButtonBottom;
@@ -54,27 +54,45 @@ public class ColorPicker {
     private MaterialDialog mMaterialDialog;
     private RecyclerView recyclerView;
     private int default_color = 0;
-    private int paddingTitleLeft,paddingTitleRight,paddingTitleBottom,paddingTitleTop;
+    private int paddingTitleLeft, paddingTitleRight, paddingTitleBottom, paddingTitleTop;
 
 
     /**
      * Constructor
+     *
      * @param activity Activity calling
      */
     public ColorPicker(Activity activity) {
         this.activity = activity;
         this.dismiss = true;
-        this.marginButtonLeft = this.marginButtonTop =  this.marginButtonRight = this.marginButtonBottom = dip2px(5);
-        this.title ="Choose the color";
+        this.marginButtonLeft = this.marginButtonTop = this.marginButtonRight = this.marginButtonBottom = dip2px(5);
+        this.title = "Choose the color";
         this.columns = 5;
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int windowSize = metrics.widthPixels;
-        this.paddingTitleTop = this.paddingTitleBottom = this.paddingTitleLeft = this.paddingTitleRight = ( windowSize - ( columns * dip2px(5) + columns * dip2px(40) ) )/2 - (int)((windowSize * 0.25)/2);
+
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int windowSize;
+
+        switch (rotation) {
+            //"PORTRAIT";
+            case Surface.ROTATION_0:
+            case Surface.ROTATION_180:
+            default:
+                windowSize = metrics.widthPixels;
+                break;
+            //"LANDSCAPE";
+            case Surface.ROTATION_90:
+            case Surface.ROTATION_270:
+                windowSize = metrics.heightPixels;
+                break;
+        }
+        this.paddingTitleTop = this.paddingTitleBottom = this.paddingTitleLeft = this.paddingTitleRight = (windowSize - (columns * dip2px(5) + columns * dip2px(40))) / 2 - (int) ((windowSize * 0.25) / 2);
     }
 
     /**
      * Set buttons color using a resource array of colors example : check in library  res/values/colorpicker-array.xml
+     *
      * @param resId Array resource
      * @return this
      */
@@ -89,6 +107,7 @@ public class ColorPicker {
 
     /**
      * Set default colors defined in colorpicker-array.xml of the library
+     *
      * @return this
      */
     private ColorPicker setColors() {
@@ -102,6 +121,7 @@ public class ColorPicker {
 
     /**
      * Set buttons from an arraylist of Hex values
+     *
      * @param colorsHexList List of hex values of the colors
      * @return this
      */
@@ -115,6 +135,7 @@ public class ColorPicker {
 
     /**
      * Set buttons color  Example : Color.RED,Color.BLACK
+     *
      * @param colorsList list of colors
      * @return this
      */
@@ -136,7 +157,7 @@ public class ColorPicker {
         TextView titleView = (TextView) view.findViewById(R.id.title);
         if (title != null) {
             titleView.setText(title);
-            titleView.setPadding(paddingTitleLeft,paddingTitleTop,paddingTitleRight,paddingTitleBottom);
+            titleView.setPadding(paddingTitleLeft, paddingTitleTop, paddingTitleRight, paddingTitleBottom);
         }
         //create Material Dialog if posneg is not enabled
         mMaterialDialog = new MaterialDialog(activity);
@@ -145,14 +166,14 @@ public class ColorPicker {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, columns);
         recyclerView.setLayoutManager(gridLayoutManager);
-        if( fastChooser )
-            colorViewAdapter = new ColorViewAdapter(colors,onFastChooseColorListener);
+        if (fastChooser)
+            colorViewAdapter = new ColorViewAdapter(colors, onFastChooseColorListener);
         else
             colorViewAdapter = new ColorViewAdapter(colors);
-        if(fullheight) {
+        if (fullheight) {
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            lp.addRule(RelativeLayout.BELOW,titleView.getId());
-            lp.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
+            lp.addRule(RelativeLayout.BELOW, titleView.getId());
+            lp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
             recyclerView.setLayoutParams(lp);
         }
 
@@ -177,11 +198,11 @@ public class ColorPicker {
             colorViewAdapter.setButtonDrawable(buttonDrawable);
         }
 
-        if ( default_color != 0 ){
+        if (default_color != 0) {
             colorViewAdapter.setDefaultColor(default_color);
         }
 
-        if( !fastChooser || onNegativeButtonListener != null || onPositiveButtonListener != null ) {
+        if (!fastChooser || onNegativeButtonListener != null || onPositiveButtonListener != null) {
             mMaterialDialog
                     .setPositiveButton(positiveText, new View.OnClickListener() {
                         @Override
@@ -201,20 +222,20 @@ public class ColorPicker {
                                 mMaterialDialog.dismiss();
                         }
                     }).setView(view);
-        }
-        else
+        } else
             mMaterialDialog.setView(view);
 
 
         mMaterialDialog.show();
-        if(positiveText.isEmpty()){
-            mMaterialDialog.getNegativeButton().setPadding(dip2px(12), 0, dip2px(32),0);
+        if (positiveText.isEmpty()) {
+            mMaterialDialog.getNegativeButton().setPadding(dip2px(12), 0, dip2px(32), 0);
         }
     }
 
 
     /**
      * Define the number of columns by default value= 3
+     *
      * @param c Columns number
      * @return this
      */
@@ -225,6 +246,7 @@ public class ColorPicker {
 
     /**
      * Define the title of the Material Dialog
+     *
      * @param title Title
      * @return this
      */
@@ -234,20 +256,11 @@ public class ColorPicker {
     }
 
     /**
-     * Define the gravity of the columns example : Gravity.CENTER, Gravity.LEFT , Gravity.RIGHT ...
-     * @param gravity Gravity
-     * @return this
-     */
-    public ColorPicker setGravity(int gravity) {
-        this.gravity = gravity;
-        return this;
-    }
-
-    /**
      * Define the margins of the Material Dialog in PIXEL
-     * @param left left
-     * @param top top
-     * @param right right
+     *
+     * @param left   left
+     * @param top    top
+     * @param right  right
      * @param bottom bottom
      * @return this
      */
@@ -261,6 +274,7 @@ public class ColorPicker {
 
     /**
      * Set tick color
+     *
      * @param color Color
      * @return this
      */
@@ -271,6 +285,7 @@ public class ColorPicker {
 
     /**
      * Set a single drawable for all buttons example : you can define a different shape ( then round or square )
+     *
      * @param drawable
      * @return this
      */
@@ -281,7 +296,8 @@ public class ColorPicker {
 
     /**
      * Set the buttons size in PIXEL
-     * @param width width
+     *
+     * @param width  width
      * @param height height
      * @return this
      */
@@ -293,9 +309,10 @@ public class ColorPicker {
 
     /**
      * Set the Margin between the buttons in PIXEL default is 10
-     * @param left left
-     * @param top top
-     * @param right right
+     *
+     * @param left   left
+     * @param top    top
+     * @param right  right
      * @param bottom bottom
      * @return
      */
@@ -309,10 +326,11 @@ public class ColorPicker {
 
     /**
      * Set title of the positive button in the Material Dialog
+     *
      * @param text text
      * @return this
      */
-    public ColorPicker setPositiveButton(String text,OnButtonListener listener) {
+    public ColorPicker setPositiveButton(String text, OnButtonListener listener) {
         this.positiveText = text;
         this.onPositiveButtonListener = listener;
         return this;
@@ -320,10 +338,11 @@ public class ColorPicker {
 
     /**
      * Set the negative button in the Material Dialog usable also with fastChooser
+     *
      * @param text text
      * @return this
      */
-    public ColorPicker setNegativeButton(String text , OnButtonListener listener) {
+    public ColorPicker setNegativeButton(String text, OnButtonListener listener) {
         this.negativeText = text;
         this.onNegativeButtonListener = listener;
         return this;
@@ -331,6 +350,7 @@ public class ColorPicker {
 
     /**
      * Set round button
+     *
      * @param roundButton true if you want a round button
      * @return this
      */
@@ -341,10 +361,11 @@ public class ColorPicker {
 
     /**
      * set a fast listener ( it shows a dialog without buttons and the event fires as soon you select a color )
+     *
      * @param listener
      * @return
      */
-    public ColorPicker setFastChooser(OnFastChooseColorListener listener){
+    public ColorPicker setFastChooser(OnFastChooseColorListener listener) {
         this.fastChooser = true;
         this.onFastChooseColorListener = listener;
         return this;
@@ -352,6 +373,7 @@ public class ColorPicker {
 
     /**
      * set a listener for the color picked
+     *
      * @param listener
      */
     public void setOnChooseColorListener(OnChooseColorListener listener) {
@@ -361,43 +383,46 @@ public class ColorPicker {
     /**
      * set if to dismiss the dialog or not on button click, by default is set to true
      */
-    public ColorPicker setDismissOnButtonClick(boolean dismiss){
+    public ColorPicker setDismissOnButtonClick(boolean dismiss) {
         this.dismiss = dismiss;
         return this;
     }
 
     /**
      * set Match_parent to RecyclerView
+     *
      * @return
      */
-    public ColorPicker setDialogFullHeight(){
+    public ColorPicker setDialogFullHeight() {
         this.fullheight = true;
         return this;
     }
 
     /**
      * Choose the color to be selected by default
+     *
      * @param color int
      * @return
      */
-    public ColorPicker setDefaultColor(int color){
+    public ColorPicker setDefaultColor(int color) {
         this.default_color = color;
         return this;
     }
 
     /**
      * getDialog if you need more options
+     *
      * @return
      */
-    public MaterialDialog getDialog(){
-        return  mMaterialDialog;
+    public MaterialDialog getDialog() {
+        return mMaterialDialog;
     }
 
     /**
      * dismiss the dialog
      */
-    public void dismissDialog(){
-        if(mMaterialDialog != null ) {
+    public void dismissDialog() {
+        if (mMaterialDialog != null) {
             Handler handler = new Handler();
             Runnable runnable = new Runnable() {
                 @Override
@@ -405,9 +430,10 @@ public class ColorPicker {
                     mMaterialDialog.dismiss();
                 }
             };
-            handler.postDelayed(runnable,250);
+            handler.postDelayed(runnable, 250);
         }
     }
+
     private ColorPicker setTitlePadding(int left, int top, int right, int bottom) {
         paddingTitleLeft = left;
         paddingTitleRight = right;
