@@ -14,7 +14,7 @@ A simple Android color picker library
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.4'
+compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.5'
 ```
 or Maven:
 
@@ -22,7 +22,7 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 ## How to use ##

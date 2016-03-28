@@ -19,7 +19,7 @@ android {
     }
 
 }
-version = "1.0.4"
+version = "1.0.5"
 group = 'petrov.kristiyan.colorpicker' // Change this to match your package name
 bintray {
     user = 'petrovkristiyan'
@@ -29,9 +29,9 @@ bintray {
         name = 'petrov.kristiyan.colorpicker'
 
         version {
-            name = '1.0.4'
+            name = '1.0.5'
             desc = 'A custom implementation of a dialog colorpicker'
-            vcsTag = '1.0.4'
+            vcsTag = '1.0.5'
 
         }
 
