@@ -1,18 +1,15 @@
 package petrov.kristiyan.colorpicker;
 
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -27,7 +24,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     private int marginLeft, marginRight, marginTop, marginBottom;
     private int tickColor = Color.WHITE;
     private int marginButtonLeft = 0, marginButtonRight = 0, marginButtonTop = 3, marginButtonBottom = 3;
-    private int buttonWidth = -1 ,buttonHeight = -1;
+    private int buttonWidth = -1, buttonHeight = -1;
     private int buttonDrawable;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
@@ -40,16 +37,16 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
             colorItem.setBackgroundResource(buttonDrawable);
             colorItem.setTextColor(tickColor);
             colorItem.setOnClickListener(this);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) colorItem.getLayoutParams();
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) colorItem.getLayoutParams();
             layoutParams.setMargins(marginButtonLeft, marginButtonTop, marginButtonRight, marginButtonBottom);
-            if(buttonWidth != -1)
+            if (buttonWidth != -1)
                 layoutParams.width = buttonWidth;
-            if(buttonHeight != -1)
+            if (buttonHeight != -1)
                 layoutParams.height = buttonHeight;
 
             //relative layout settings
-            RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
-            GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) relativeLayout.getLayoutParams();
+            LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.linearLayout);
+            GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) linearLayout.getLayoutParams();
             lp.setMargins(marginLeft, marginTop, marginRight, marginBottom);
         }
 
@@ -60,12 +57,12 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
                 notifyItemChanged(colorPosition);
             }
             colorPosition = getLayoutPosition();
-            colorSelected = (int)v.getTag();
+            colorSelected = (int) v.getTag();
             mDataset.get(getLayoutPosition()).setCheck(true);
             notifyItemChanged(colorPosition);
 
-            if (onFastChooseColorListener != null )
-                onFastChooseColorListener.setOnFastChooseColorListener(colorPosition,colorSelected);
+            if (onFastChooseColorListener != null)
+                onFastChooseColorListener.setOnFastChooseColorListener(colorPosition, colorSelected);
         }
     }
 
@@ -100,10 +97,9 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
             holder.colorItem.setText("✔");
         else
             holder.colorItem.setText(" ");
-        if(buttonDrawable != 0) {
-            ColorFilter cf = new PorterDuffColorFilter(mDataset.get(position).getColor(), PorterDuff.Mode.MULTIPLY);
-            holder.colorItem.getBackground().mutate().setColorFilter(cf);
-        }else {
+        if (buttonDrawable != 0) {
+            holder.colorItem.getBackground().setColorFilter(mDataset.get(position).getColor(), PorterDuff.Mode.SRC_IN);
+        } else {
             holder.colorItem.setBackgroundColor(mDataset.get(position).getColor());
         }
         holder.colorItem.setTag(mDataset.get(position).getColor());
@@ -123,8 +119,8 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         this.marginTop = top;
     }
 
-    public void setDefaultColor(int color){
-        for( int i = 0; i < mDataset.size(); i++ ) {
+    public void setDefaultColor(int color) {
+        for (int i = 0; i < mDataset.size(); i++) {
             ColorPal colorPal = mDataset.get(i);
             if (colorPal.getColor() == color) {
                 colorPal.setCheck(true);
@@ -135,19 +131,22 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     }
 
     public void setButtonsTickColor(int color) {
-       this.tickColor = color;
+        this.tickColor = color;
     }
+
     public void setButtonMargin(int left, int top, int right, int bottom) {
         this.marginButtonLeft = left;
         this.marginButtonRight = right;
         this.marginButtonTop = top;
         this.marginButtonBottom = bottom;
     }
-    public void setButtonSize(int width,int height) {
+
+    public void setButtonSize(int width, int height) {
         this.buttonWidth = width;
         this.buttonHeight = height;
     }
-    public void setButtonDrawable(int drawable){
+
+    public void setButtonDrawable(int drawable) {
         this.buttonDrawable = drawable;
     }
 

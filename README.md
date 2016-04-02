@@ -14,7 +14,7 @@ A simple Android color picker library
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.5'
+compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.6'
 ```
 or Maven:
 
@@ -22,7 +22,7 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
 </dependency>
 ```
 ## How to use ##
@@ -101,7 +101,7 @@ setRoundButton(boolean roundButton);
 ```
 
 ## Additional Credits ##
-for the Material Dialog library incorporated in the code
+for the Material Dialog library for button design specs and implementation
   [https://github.com/drakeet/MaterialDialog](https://github.com/drakeet/MaterialDialog)
 
 

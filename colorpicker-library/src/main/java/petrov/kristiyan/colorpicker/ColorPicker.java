@@ -5,16 +5,14 @@ import android.content.res.TypedArray;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import me.drakeet.materialdialog.MaterialDialog;
 
 public class ColorPicker {
 
@@ -22,6 +20,7 @@ public class ColorPicker {
     private OnChooseColorListener onChooseColorListener;
     private OnFastChooseColorListener onFastChooseColorListener;
     private OnButtonListener onNegativeButtonListener, onPositiveButtonListener;
+
 
     public interface OnChooseColorListener {
         void onChooseColor(int position, int color);
@@ -47,13 +46,13 @@ public class ColorPicker {
     private int marginButtonLeft, marginButtonRight, marginButtonTop, marginButtonBottom;
     private int buttonWidth, buttonHeight;
     private int buttonDrawable;
-    private String negativeText = "CANCEL", positiveText = "OK";
+    private String negativeText, positiveText;
     private boolean roundButton;
     private boolean dismiss;
     private boolean fullheight;
-    private MaterialDialog mMaterialDialog;
+    private CustomDialog dialog;
     private RecyclerView recyclerView;
-    private int default_color = 0;
+    private int default_color;
     private int paddingTitleLeft, paddingTitleRight, paddingTitleBottom, paddingTitleTop;
 
 
@@ -67,27 +66,10 @@ public class ColorPicker {
         this.dismiss = true;
         this.marginButtonLeft = this.marginButtonTop = this.marginButtonRight = this.marginButtonBottom = dip2px(5);
         this.title = "Choose the color";
+        this.negativeText = "CANCEL";
+        this.positiveText = "OK";
+        this.default_color = 0;
         this.columns = 5;
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int windowSize;
-
-        switch (rotation) {
-            //"PORTRAIT";
-            case Surface.ROTATION_0:
-            case Surface.ROTATION_180:
-            default:
-                windowSize = metrics.widthPixels;
-                break;
-            //"LANDSCAPE";
-            case Surface.ROTATION_90:
-            case Surface.ROTATION_270:
-                windowSize = metrics.heightPixels;
-                break;
-        }
-        this.paddingTitleTop = this.paddingTitleBottom = this.paddingTitleLeft = this.paddingTitleRight = (windowSize - (columns * dip2px(5) + columns * dip2px(40))) / 2 - (int) ((windowSize * 0.25) / 2);
     }
 
     /**
@@ -153,15 +135,13 @@ public class ColorPicker {
     public void show() {
         if (colors == null || colors.isEmpty())
             setColors();
-        View view = activity.getLayoutInflater().inflate(R.layout.color_palette_layout, null);
+        View view = activity.getLayoutInflater().inflate(R.layout.color_palette_layout, null, false);
+
         TextView titleView = (TextView) view.findViewById(R.id.title);
         if (title != null) {
             titleView.setText(title);
             titleView.setPadding(paddingTitleLeft, paddingTitleTop, paddingTitleRight, paddingTitleBottom);
         }
-        //create Material Dialog if posneg is not enabled
-        mMaterialDialog = new MaterialDialog(activity);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.color_palette);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, columns);
@@ -203,33 +183,42 @@ public class ColorPicker {
         }
 
         if (!fastChooser || onNegativeButtonListener != null || onPositiveButtonListener != null) {
-            mMaterialDialog
-                    .setPositiveButton(positiveText, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (!fastChooser)
-                                onChooseColorListener.onChooseColor(colorViewAdapter.getColorPosition(), colorViewAdapter.getColorSelected());
-                            onPositiveButtonListener.onClick(v);
-                            if (dismiss)
-                                mMaterialDialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton(negativeText, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onNegativeButtonListener.onClick(v);
-                            if (dismiss)
-                                mMaterialDialog.dismiss();
-                        }
-                    }).setView(view);
-        } else
-            mMaterialDialog.setView(view);
 
+            Button positiveButton = (Button) view.findViewById(R.id.positive);
+            Button negativeButton = (Button) view.findViewById(R.id.negative);
 
-        mMaterialDialog.show();
-        if (positiveText.isEmpty()) {
-            mMaterialDialog.getNegativeButton().setPadding(dip2px(12), 0, dip2px(32), 0);
+            positiveButton.setText(positiveText + "");
+            negativeButton.setText(negativeText + "");
+
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!fastChooser)
+                        onChooseColorListener.onChooseColor(colorViewAdapter.getColorPosition(), colorViewAdapter.getColorSelected());
+                    onPositiveButtonListener.onClick(v);
+                    if (dismiss)
+                        dialog.dismiss();
+                }
+            });
+
+            negativeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onNegativeButtonListener.onClick(v);
+                    if (dismiss)
+                        dialog.dismiss();
+                }
+            });
+
         }
+        dialog = new CustomDialog(activity, view);
+        dialog.show();
+        //Keep dialog open when rotate
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
     }
 
 
@@ -414,20 +403,20 @@ public class ColorPicker {
      *
      * @return
      */
-    public MaterialDialog getDialog() {
-        return mMaterialDialog;
+    public CustomDialog getDialog() {
+        return dialog;
     }
 
     /**
      * dismiss the dialog
      */
     public void dismissDialog() {
-        if (mMaterialDialog != null) {
+        if (dialog != null) {
             Handler handler = new Handler();
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    mMaterialDialog.dismiss();
+                    dialog.dismiss();
                 }
             };
             handler.postDelayed(runnable, 250);

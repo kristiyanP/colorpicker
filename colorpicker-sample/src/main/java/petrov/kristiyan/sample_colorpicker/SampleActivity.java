@@ -6,10 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -32,15 +31,15 @@ public class SampleActivity extends AppCompatActivity {
                     public void setOnFastChooseColorListener(int position, int color) {
                         colorPicker.dismissDialog();
                     }
-                }).setNegativeButton("DEFAULT",new ColorPicker.OnButtonListener() {
+                }).setNegativeButton("DEFAULT", new ColorPicker.OnButtonListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("DEFAULT","default");
+                        Log.d("DEFAULT", "default");
                     }
                 }).setPositiveButton("CANCEL", new ColorPicker.OnButtonListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("CANCEL","cancel");
+                        Log.d("CANCEL", "cancel");
                     }
                 }).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).setRoundButton(true).show();
             }

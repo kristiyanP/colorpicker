@@ -21,4 +21,9 @@
     <color name="color14">#CE7777</color>
     <color name="color15">#9086BA</color>
 
+    <color name="white">#ffffff</color>
+    <color name="lite_blue">#42a5f5</color>
+    <color name="window_background">#00000000</color>
+    <color name="black_de">#000000</color>
+
 </resources>
