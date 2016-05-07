@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class ColorPicker {
 
-
     private OnChooseColorListener onChooseColorListener;
     private OnFastChooseColorListener onFastChooseColorListener;
 
@@ -100,20 +99,6 @@ public class ColorPicker {
     }
 
     /**
-     * Set default colors defined in colorpicker-array.xml of the library
-     *
-     * @return this
-     */
-    private ColorPicker setColors() {
-        ta = context.getResources().obtainTypedArray(R.array.default_colors);
-        colors = new ArrayList<>();
-        for (int i = 0; i < ta.length(); i++) {
-            colors.add(new ColorPal(ta.getColor(i, 0), false));
-        }
-        return this;
-    }
-
-    /**
      * Set buttons from an arraylist of Hex values
      *
      * @param colorsHexList List of hex values of the colors
@@ -138,6 +123,17 @@ public class ColorPicker {
         for (int i = 0; i < colorsList.length; i++) {
             colors.add(new ColorPal(colorsList[i], false));
         }
+        return this;
+    }
+
+    /**
+     * Choose the color to be selected by default
+     *
+     * @param color int
+     * @return
+     */
+    public ColorPicker setDefaultColorButton(int color) {
+        this.default_color = color;
         return this;
     }
 
@@ -178,7 +174,7 @@ public class ColorPicker {
             colorViewAdapter.setTickColor(tickColor);
         }
         if (marginColorButtonBottom != 0 || marginColorButtonLeft != 0 || marginColorButtonRight != 0 || marginColorButtonTop != 0) {
-            colorViewAdapter.setColorButtonMargin(dip2px(marginColorButtonLeft), dip2px(marginColorButtonTop), dip2px(marginColorButtonRight),dip2px(marginColorButtonBottom));
+            colorViewAdapter.setColorButtonMargin(dip2px(marginColorButtonLeft), dip2px(marginColorButtonTop), dip2px(marginColorButtonRight), dip2px(marginColorButtonBottom));
         }
         if (colorButtonHeight != 0 || colorButtonWidth != 0) {
             colorViewAdapter.setColorButtonSize(dip2px(colorButtonWidth), dip2px(colorButtonHeight));
@@ -229,7 +225,6 @@ public class ColorPicker {
         dialog.getWindow().setAttributes(lp);
     }
 
-
     /**
      * Define the number of columns by default value= 3
      *
@@ -252,21 +247,13 @@ public class ColorPicker {
         return this;
     }
 
-    private ColorPicker setMargin(int left, int top, int right, int bottom) {
-        this.marginLeft = left;
-        this.marginRight = right;
-        this.marginTop = top;
-        this.marginBottom = bottom;
-        return this;
-    }
-
     /**
      * Set tick color
      *
      * @param color Color
      * @return this
      */
-    public ColorPicker setTickColor(int color) {
+    public ColorPicker setColorButtonTickColor(int color) {
         this.tickColor = color;
         return this;
     }
@@ -347,9 +334,11 @@ public class ColorPicker {
         return this;
     }
 
-    /** Add a  Button
-     * @param text title of button
-     * @param button button to be added
+    /**
+     * Add a  Button
+     *
+     * @param text     title of button
+     * @param button   button to be added
      * @param listener listener
      * @return
      */
@@ -367,7 +356,8 @@ public class ColorPicker {
 
     /**
      * add a new Button using default style
-     * @param text title of button
+     *
+     * @param text     title of button
      * @param listener
      * @return
      */
@@ -400,6 +390,7 @@ public class ColorPicker {
 
     /**
      * set if to dismiss the dialog or not on button listener click, by default is set to true
+     *
      * @param dismiss
      * @return
      */
@@ -415,17 +406,6 @@ public class ColorPicker {
      */
     public ColorPicker setDialogFullHeight() {
         this.fullHeight = true;
-        return this;
-    }
-
-    /**
-     * Choose the color to be selected by default
-     *
-     * @param color int
-     * @return
-     */
-    public ColorPicker setDefaultColorButton(int color) {
-        this.default_color = color;
         return this;
     }
 
@@ -492,6 +472,7 @@ public class ColorPicker {
 
     /**
      * disables the postive and negative buttons
+     *
      * @param disableDefaultButtons
      * @return
      */
@@ -502,6 +483,7 @@ public class ColorPicker {
 
     /**
      * set padding to the title in DP
+     *
      * @param left
      * @param top
      * @param right
@@ -523,6 +505,28 @@ public class ColorPicker {
     private int dip2px(float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * Set default colors defined in colorpicker-array.xml of the library
+     *
+     * @return this
+     */
+    private ColorPicker setColors() {
+        ta = context.getResources().obtainTypedArray(R.array.default_colors);
+        colors = new ArrayList<>();
+        for (int i = 0; i < ta.length(); i++) {
+            colors.add(new ColorPal(ta.getColor(i, 0), false));
+        }
+        return this;
+    }
+
+    private ColorPicker setMargin(int left, int top, int right, int bottom) {
+        this.marginLeft = left;
+        this.marginRight = right;
+        this.marginTop = top;
+        this.marginBottom = bottom;
+        return this;
     }
 
 }

@@ -14,7 +14,7 @@ A simple Android color picker library
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.0.6'
+compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.1.0'
 ```
 or Maven:
 
@@ -22,42 +22,48 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.0.6</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 ## How to use ##
 
-  Simple example : 
+  Example 1 : 
 ```java
   ColorPicker colorPicker = new ColorPicker(activity);
   colorPicker.show();
   colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
       @Override
       public void onChooseColor(int position,int color) {
-            //put code
+            // put code
       }
   });
 ```  
-  Complex example : 
+  Example 2 : 
 ```java
   final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
   colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
               @Override
               public void setOnFastChooseColorListener(int position, int color) {
-                  colorPicker.dismissDialog();
+                  // put code
               }
-          }).setNegativeButton("DEFAULT",new ColorPicker.OnButtonListener() {
-              @Override
-              public void onClick(View v) {
-                  Log.d("DEFAULT","default");
-              }
-          }).setPositiveButton("CANCEL", new ColorPicker.OnButtonListener() {
-              @Override
-              public void onClick(View v) {
-                  Log.d("CANCEL","cancel");
-              }
-          }).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).setDialogFullHeight().show();
+          	}).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).show();
 ```
+  Example 3 : 
+```java
+  final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
+  colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+		      @Override
+		      public void onChooseColor(int position,int color) {
+		            //put code
+		      }
+  			}).addListenerButton("newButton", new ColorPicker.OnButtonListener() {
+                        @Override
+                        public void onClick(View v, int position, int color) {
+                            // put code
+                        }
+            }).disableDefaultButtons(true).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).setDialogFullHeight().show();
+```
+
 
 ## What you can do ##
 
@@ -67,38 +73,63 @@ Choose your own colors
 setColors(int resId); // using an array resource
 setColors(ArrayList<String> colorsHexList); // using a list of hex colors
 setColors(int... colorsList); // use a list of colors Color.RED,Color.Black etc
-setDefaultColor(int color);
+setDefaultColorButton(int color); // set the colorButton to check by default
 ```
 
-Listeners
+
+Define Listeners
+
 ```java
-setFastChooser(OnFastChooseColorListener listener);
+setOnFastChooseColorListener(OnFastChooseColorListener listener); // renamed in version 1.1.0
 setOnChooseColorListener(OnChooseColorListener listener);
 ```
 
-General changes you can do:
+
+Add custom buttons
 
 ```java
-setDialogFullHeight();
-setColumns(int c);
-setTitle(String title);
+addListenerButton(String text, Button button, OnButtonListener listener); // custom button
+addListenerButton(String text, final OnButtonListener listener); // it will generate a button with default style
+```
+
+
+General methods you can use:
+
+```java
+setDialogFullHeight(); // bigger height
+dismissDialog(); // dismiss dialog slowly
+setColumns(int c); // set columns number
+setTitle(String title); // set the title of the dialog
 setTitlePadding(int left, int top, int right, int bottom);
-setMargin(int left, int top, int right, int bottom);
-setPositiveButton(String text, OnButtonListener listener);
-setNegativeButton(String text, OnButtonListener listener);
-setDismissOnButtonClick(boolean dismiss);
+disableDefaultButtons(boolean disableDefaultButtons); // use if you want to implement your own buttons
+
+getDialogBaseLayout(); // returns the RelativeLayout used as base for the dialog
+getDialogViewLayout(); // returns the view inflated into the dialog
+getDialog(); // returns the dialog
+getPositiveButton(); // returns the positive button defined by default
+getNegativeButton(); // returns the negative button defined by default
+setDismissOnButtonListenerClick(boolean dismiss); // renamed in version 1.1.0
 ```
 
 
-Buttons changes you can do:
+ColorButtons changes you can do:
 
 ```java
-setButtonsTickColor(int color);
-setButtonDrawable(int drawable);
-setButtonSize(int width, int height);
-setButtonMargin(int left, int top, int right, int bottom);
-setRoundButton(boolean roundButton);
+setColorButtonTickColor(int color);  // renamed in version 1.1.0
+setColorButtonDrawable(int drawable);
+setColorButtonSize(int width, int height);
+setColorButtonMargin(int left, int top, int right, int bottom);
+setRoundColorButton(boolean roundButton);
 ```
+
+
+Removed from version 1.1.0
+
+```java
+setPositiveButton(String text, OnButtonListener listener); // not present from version 1.1.0 
+setNegativeButton(String text, OnButtonListener listener); // not present from version 1.1.0
+```
+
 
 ## Additional Credits ##
 for the Material Dialog library for button design specs and implementation
