@@ -39,7 +39,6 @@ public class SampleActivity extends AppCompatActivity {
                             Log.d("position",""+position);
                         }
                     }).setRoundColorButton(true).show();
-                    colorPicker.getDialogViewLayout().setBackgroundColor(Color.RED);
                 }
             });
         }
