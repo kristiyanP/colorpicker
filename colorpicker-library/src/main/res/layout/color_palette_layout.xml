@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:id="@+id/colorpicker_base">
 
     <TextView
         android:id="@+id/title"
@@ -21,29 +22,33 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title" />
 
-    <Button
-        android:id="@+id/positive"
-        style="@style/ActionButton"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/color_palette"
+        android:layout_below="@+id/color_palette"
         android:layout_alignRight="@+id/color_palette"
-        android:layout_below="@+id/color_palette"
-        android:layout_margin="0dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:textColor="@color/lite_blue" />
+        android:layout_alignEnd="@+id/color_palette"
+        android:layout_alignLeft="@+id/color_palette"
+        android:layout_alignStart="@+id/color_palette"
+        android:id="@+id/buttons_layout"
+        android:gravity="right">
 
-    <Button
-        android:id="@+id/negative"
-        style="@style/ActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/color_palette"
-        android:layout_margin="0dp"
-        android:layout_toLeftOf="@+id/positive"
-        android:layout_toStartOf="@+id/positive"
-        android:textColor="@color/black_de" />
+        <Button
+            android:id="@+id/positive"
+            style="@style/ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lite_blue" />
+
+        <Button
+            android:id="@+id/negative"
+            style="@style/ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/black_de" />
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -22,28 +23,26 @@ public class SampleActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
-                colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
-                    @Override
-                    public void setOnFastChooseColorListener(int position, int color) {
-                        colorPicker.dismissDialog();
-                    }
-                }).setNegativeButton("DEFAULT", new ColorPicker.OnButtonListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("DEFAULT", "default");
-                    }
-                }).setPositiveButton("CANCEL", new ColorPicker.OnButtonListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("CANCEL", "cancel");
-                    }
-                }).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).setRoundButton(true).show();
-            }
-        });
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
+                    colorPicker.setDefaultColorButton(Color.parseColor("#f84c44")).setColumns(5).setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                        @Override
+                        public void onChooseColor(int position, int color) {
+                            Log.d("position",""+position);// will be fired only when OK button was tapped
+                        }
+                    }).addListenerButton("newButton", new ColorPicker.OnButtonListener() {
+                        @Override
+                        public void onClick(View v, int position, int color) {
+                            Log.d("position",""+position);
+                        }
+                    }).setRoundColorButton(true).show();
+                    colorPicker.getDialogViewLayout().setBackgroundColor(Color.RED);
+                }
+            });
+        }
 
     }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="colorpicker_dialog_title">Choose the color</string>
+    <string name="colorpicker_dialog_cancel">CANCEL</string>
+    <string name="colorpicker_dialog_ok">OK</string>
+</resources>
