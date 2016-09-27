@@ -32,7 +32,7 @@
         android:layout_alignLeft="@+id/color_palette"
         android:layout_alignStart="@+id/color_palette"
         android:id="@+id/buttons_layout"
-        android:gravity="right">
+        android:gravity="end">
 
         <Button
             android:id="@+id/positive"
@@ -47,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:textColor="@color/black_de" />
     </LinearLayout>
 

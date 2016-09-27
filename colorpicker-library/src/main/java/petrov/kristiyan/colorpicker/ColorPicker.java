@@ -24,10 +24,12 @@ public class ColorPicker {
 
     public interface OnChooseColorListener {
         void onChooseColor(int position, int color);
+        void onCancel();
     }
 
     public interface OnFastChooseColorListener {
         void setOnFastChooseColorListener(int position, int color);
+        void onCancel();
     }
 
     public interface OnButtonListener {
@@ -62,8 +64,6 @@ public class ColorPicker {
 
     /**
      * Constructor
-     *
-     * @param context
      */
     public ColorPicker(Context context) {
         dialogViewLayout = LayoutInflater.from(context).inflate(R.layout.color_palette_layout, null, false);
@@ -120,8 +120,8 @@ public class ColorPicker {
      */
     public ColorPicker setColors(int... colorsList) {
         colors = new ArrayList<>();
-        for (int i = 0; i < colorsList.length; i++) {
-            colors.add(new ColorPal(colorsList[i], false));
+        for (int aColorsList : colorsList) {
+            colors.add(new ColorPal(aColorsList, false));
         }
         return this;
     }
@@ -130,7 +130,7 @@ public class ColorPicker {
      * Choose the color to be selected by default
      *
      * @param color int
-     * @return
+     * @return this
      */
     public ColorPicker setDefaultColorButton(int color) {
         this.default_color = color;
@@ -203,8 +203,12 @@ public class ColorPicker {
             public void onClick(View v) {
                 if (onChooseColorListener != null && !fastChooser)
                     onChooseColorListener.onChooseColor(colorViewAdapter.getColorPosition(), colorViewAdapter.getColorSelected());
-                if (dismiss)
+                if (dismiss) {
                     dismissDialog();
+                    if (onFastChooseColorListener != null) {
+                        onFastChooseColorListener.onCancel();
+                    }
+                }
             }
         });
 
@@ -213,6 +217,8 @@ public class ColorPicker {
             public void onClick(View v) {
                 if (dismiss)
                     dismissDialog();
+                if (onChooseColorListener != null)
+                    onChooseColorListener.onCancel();
             }
         });
 
@@ -261,7 +267,7 @@ public class ColorPicker {
     /**
      * Set a single drawable for all buttons example : you can define a different shape ( then round or square )
      *
-     * @param drawable
+     * @param drawable Resource
      * @return this
      */
     public ColorPicker setColorButtonDrawable(int drawable) {
@@ -289,7 +295,7 @@ public class ColorPicker {
      * @param top    top
      * @param right  right
      * @param bottom bottom
-     * @return
+     * @return this
      */
     public ColorPicker setColorButtonMargin(int left, int top, int right, int bottom) {
         this.marginColorButtonLeft = left;
@@ -313,8 +319,8 @@ public class ColorPicker {
     /**
      * set a fast listener ( it shows a dialog without buttons and the event fires as soon you select a color )
      *
-     * @param listener
-     * @return
+     * @param listener OnFastChooseColorListener
+     * @return this
      */
     public ColorPicker setOnFastChooseColorListener(OnFastChooseColorListener listener) {
         this.fastChooser = true;
@@ -327,7 +333,7 @@ public class ColorPicker {
     /**
      * set a listener for the color picked
      *
-     * @param listener
+     * @param listener OnChooseColorListener
      */
     public ColorPicker setOnChooseColorListener(OnChooseColorListener listener) {
         onChooseColorListener = listener;
@@ -340,7 +346,7 @@ public class ColorPicker {
      * @param text     title of button
      * @param button   button to be added
      * @param listener listener
-     * @return
+     * @return this
      */
     public ColorPicker addListenerButton(String text, Button button, final OnButtonListener listener) {
         button.setOnClickListener(new View.OnClickListener() {
@@ -358,8 +364,8 @@ public class ColorPicker {
      * add a new Button using default style
      *
      * @param text     title of button
-     * @param listener
-     * @return
+     * @param listener OnButtonListener
+     * @return this
      */
     public ColorPicker addListenerButton(String text, final OnButtonListener listener) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -391,8 +397,8 @@ public class ColorPicker {
     /**
      * set if to dismiss the dialog or not on button listener click, by default is set to true
      *
-     * @param dismiss
-     * @return
+     * @param dismiss boolean
+     * @return this
      */
     public ColorPicker setDismissOnButtonListenerClick(boolean dismiss) {
         this.dismiss = dismiss;
@@ -402,7 +408,7 @@ public class ColorPicker {
     /**
      * set Match_parent to RecyclerView
      *
-     * @return
+     * @return this
      */
     public ColorPicker setDialogFullHeight() {
         this.fullHeight = true;
@@ -412,7 +418,7 @@ public class ColorPicker {
     /**
      * getDialog if you need more options
      *
-     * @return
+     * @return CustomDialog
      */
     public CustomDialog getDialog() {
         return dialog;
@@ -473,8 +479,8 @@ public class ColorPicker {
     /**
      * disables the postive and negative buttons
      *
-     * @param disableDefaultButtons
-     * @return
+     * @param disableDefaultButtons boolean
+     * @return this
      */
     public ColorPicker disableDefaultButtons(boolean disableDefaultButtons) {
         this.disableDefaultButtons = disableDefaultButtons;
@@ -484,11 +490,11 @@ public class ColorPicker {
     /**
      * set padding to the title in DP
      *
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
-     * @return
+     * @param left dp
+     * @param top dp
+     * @param right dp
+     * @param bottom dp
+     * @return this
      */
     public ColorPicker setTitlePadding(int left, int top, int right, int bottom) {
         paddingTitleLeft = left;

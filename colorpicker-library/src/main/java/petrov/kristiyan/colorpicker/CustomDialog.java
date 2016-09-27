@@ -1,9 +1,5 @@
 package petrov.kristiyan.colorpicker;
 
-/**
- * Created by -> kristiyan on 02/04/16.
- */
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;

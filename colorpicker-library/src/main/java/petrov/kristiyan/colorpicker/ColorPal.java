@@ -12,10 +12,7 @@ public class ColorPal {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof ColorPal) {
-            return ((ColorPal) o).color == color;
-        }
-        return false;
+        return o instanceof ColorPal && ((ColorPal) o).color == color;
     }
 
     public int getColor() {

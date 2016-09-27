@@ -23,7 +23,6 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     private ArrayList<ColorPal> mDataset;
     private int colorPosition = -1;
     private int colorSelected;
-    private View v;
     private int marginLeft, marginRight, marginTop, marginBottom;
     private int tickColor = Color.WHITE;
     private int marginButtonLeft = 0, marginButtonRight = 0, marginButtonTop = 3, marginButtonBottom = 3;
@@ -106,9 +105,8 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
     @Override
     public ColorViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.palette_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.palette_item, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override

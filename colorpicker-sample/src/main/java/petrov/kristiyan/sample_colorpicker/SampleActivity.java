@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -32,6 +31,11 @@ public class SampleActivity extends AppCompatActivity {
                         @Override
                         public void onChooseColor(int position, int color) {
                             Log.d("position",""+position);// will be fired only when OK button was tapped
+                        }
+
+                        @Override
+                        public void onCancel() {
+
                         }
                     }).addListenerButton("newButton", new ColorPicker.OnButtonListener() {
                         @Override
