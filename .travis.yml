@@ -1,6 +1,5 @@
 language: android
 jdk: oraclejdk8
-script: ./gradlew clean build
 android:
   components:
     # Uncomment the lines below if you want to
