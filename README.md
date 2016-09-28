@@ -14,7 +14,7 @@ A simple Android color picker library
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.1.0'
+compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.1.2'
 ```
 or Maven:
 
@@ -22,7 +22,7 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan.colorpicker</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 ## How to use ##
@@ -36,17 +36,27 @@ or Maven:
       public void onChooseColor(int position,int color) {
             // put code
       }
+      
+      @Override
+      public void onCancel(){
+	// put code
+      }
   });
 ```  
   Example 2 : 
 ```java
   final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
   colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
-              @Override
-              public void setOnFastChooseColorListener(int position, int color) {
-                  // put code
-              }
-          	}).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).show();
+		@Override
+		public void setOnFastChooseColorListener(int position, int color) {
+		  // put code
+		}
+	      
+		@Override
+		public void onCancel(){
+		// put code
+		}
+	      }).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).show();
 ```
   Example 3 : 
 ```java
@@ -54,9 +64,14 @@ or Maven:
   colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
 		      @Override
 		      public void onChooseColor(int position,int color) {
-		            //put code
+		            // put code
 		      }
-  			}).addListenerButton("newButton", new ColorPicker.OnButtonListener() {
+		      
+		      @Override
+		      public void onCancel(){
+		      	// put code
+		      }
+		      }).addListenerButton("newButton", new ColorPicker.OnButtonListener() {
                         @Override
                         public void onClick(View v, int position, int color) {
                             // put code
