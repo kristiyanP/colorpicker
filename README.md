@@ -1,7 +1,6 @@
 #ColorPicker [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ColorPicker-green.svg?style=true)](https://android-arsenal.com/details/1/3121) [![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)[ ![Download](https://api.bintray.com/packages/petrovkristiyan/maven/colorpicker/images/download.svg) ](https://bintray.com/petrovkristiyan/maven/colorpicker/_latestVersion)
 
-#
-A simple Android color picker library
+# A simple Android color picker library
 
 ![screen1](https://raw.github.com/kristiyanP/colorpicker/master/screen1.png)
 
