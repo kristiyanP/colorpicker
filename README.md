@@ -1,4 +1,4 @@
-#ColorPicker [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ColorPicker-green.svg?style=true)](https://android-arsenal.com/details/1/3121) [![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker) [ ![Download](https://api.bintray.com/packages/petrovkristiyan/maven/petrov.kristiyan.colorpicker/images/download.svg) ]()
+#ColorPicker [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ColorPicker-green.svg?style=true)](https://android-arsenal.com/details/1/3121) [![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)[ ![Download](https://api.bintray.com/packages/petrovkristiyan/maven/colorpicker/images/download.svg) ](https://bintray.com/petrovkristiyan/maven/colorpicker/_latestVersion)
 
 #
 A simple Android color picker library
@@ -14,15 +14,16 @@ A simple Android color picker library
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-compile 'petrov.kristiyan.colorpicker:colorpicker-library:1.1.4'
+compile 'petrov.kristiyan:colorpicker-library:1.1.4'
 ```
 or Maven:
 
 ```xml
 <dependency>
-  <groupId>petrov.kristiyan.colorpicker</groupId>
+  <groupId>petrov.kristiyan</groupId>
   <artifactId>colorpicker-library</artifactId>
   <version>1.1.4</version>
+  <type>pom</type>
 </dependency>
 ```
 ## How to use ##
