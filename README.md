@@ -13,7 +13,7 @@
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-compile 'petrov.kristiyan:colorpicker-library:1.1.4'
+compile 'petrov.kristiyan:colorpicker-library:1.1.5'
 ```
 or Maven:
 
@@ -21,7 +21,7 @@ or Maven:
 <dependency>
   <groupId>petrov.kristiyan</groupId>
   <artifactId>colorpicker-library</artifactId>
-  <version>1.1.4</version>
+  <version>1.1.5</version>
   <type>pom</type>
 </dependency>
 ```
