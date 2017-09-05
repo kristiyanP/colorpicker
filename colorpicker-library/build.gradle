@@ -19,16 +19,16 @@ def projectLicenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.txt"
 def projectKeywords = ['color', 'library', 'colorpicker','android']
 def developerFullName = "Kristiyan Petrov"
 group = projectGroup
-version = "1.1.4"
+version = "1.1.5"
 
-def sdkVersion = 25;
-def toolsVersion = "25.0.0";
+def sdkVersion = 26;
+def toolsVersion = "26.0.1";
 
 android {
     compileSdkVersion sdkVersion
     buildToolsVersion toolsVersion
     defaultConfig {
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion sdkVersion
         versionCode 1
         versionName version
@@ -50,8 +50,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile "com.android.support:appcompat-v7:${toolsVersion}"
+    compile "com.android.support:recyclerview-v7:${toolsVersion}"
     testCompile 'junit:junit:4.12'
 }
 

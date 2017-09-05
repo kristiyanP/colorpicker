@@ -1,4 +1,4 @@
-package petrov.kristiyan.sample;
+package petrov.kristiyan.colorpicker_sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

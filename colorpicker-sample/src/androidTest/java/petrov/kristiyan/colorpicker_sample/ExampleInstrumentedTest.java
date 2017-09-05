@@ -1,4 +1,4 @@
-package petrov.kristiyan.sample;
+package petrov.kristiyan.colorpicker_sample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("petrov.kristiyan.sample", appContext.getPackageName());
+        assertEquals("petrov.kristiyan.colorpicker_sample", appContext.getPackageName());
     }
 }

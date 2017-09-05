@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="petrov.kristiyan.sample">
+    package="petrov.kristiyan.colorpicker_sample">
 
     <application
         android:allowBackup="true"

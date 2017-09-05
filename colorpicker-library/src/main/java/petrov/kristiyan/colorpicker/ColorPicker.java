@@ -68,11 +68,11 @@ public class ColorPicker {
      */
     public ColorPicker(Context context) {
         dialogViewLayout = LayoutInflater.from(context).inflate(R.layout.color_palette_layout, null, false);
-        colorpicker_base = (RelativeLayout) dialogViewLayout.findViewById(R.id.colorpicker_base);
-        recyclerView = (RecyclerView) dialogViewLayout.findViewById(R.id.color_palette);
-        buttons_layout = (LinearLayout) dialogViewLayout.findViewById(R.id.buttons_layout);
-        positiveButton = (Button) dialogViewLayout.findViewById(R.id.positive);
-        negativeButton = (Button) dialogViewLayout.findViewById(R.id.negative);
+        colorpicker_base = dialogViewLayout.findViewById(R.id.colorpicker_base);
+        recyclerView = dialogViewLayout.findViewById(R.id.color_palette);
+        buttons_layout = dialogViewLayout.findViewById(R.id.buttons_layout);
+        positiveButton = dialogViewLayout.findViewById(R.id.positive);
+        negativeButton = dialogViewLayout.findViewById(R.id.negative);
 
         this.context = context;
         this.dismiss = true;
@@ -145,7 +145,7 @@ public class ColorPicker {
         if (colors == null || colors.isEmpty())
             setColors();
 
-        TextView titleView = (TextView) dialogViewLayout.findViewById(R.id.title);
+        TextView titleView = dialogViewLayout.findViewById(R.id.title);
         if (title != null) {
             titleView.setText(title);
             titleView.setPadding(dip2px(paddingTitleLeft), dip2px(paddingTitleTop), dip2px(paddingTitleRight), dip2px(paddingTitleBottom));

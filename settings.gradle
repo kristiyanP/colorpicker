@@ -1,1 +1,1 @@
-include ':colorpicker-library', ':sample'
+include ':colorpicker-library', ':colorpicker-sample'

@@ -1,4 +1,4 @@
-package petrov.kristiyan.sample;
+package petrov.kristiyan.colorpicker_sample;
 
 import org.junit.Test;
 
