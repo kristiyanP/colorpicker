@@ -1,9 +1,11 @@
 package petrov.kristiyan.colorpicker;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 
@@ -25,11 +28,13 @@ public class ColorPicker {
 
     public interface OnChooseColorListener {
         void onChooseColor(int position, int color);
+
         void onCancel();
     }
 
     public interface OnFastChooseColorListener {
         void setOnFastChooseColorListener(int position, int color);
+
         void onCancel();
     }
 
@@ -41,7 +46,7 @@ public class ColorPicker {
     private ColorViewAdapter colorViewAdapter;
     private boolean fastChooser;
     private TypedArray ta;
-    private Context context;
+    private WeakReference<Activity> context;
     private int columns;
     private String title;
     private int marginLeft, marginRight, marginTop, marginBottom;
@@ -53,7 +58,7 @@ public class ColorPicker {
     private boolean roundColorButton;
     private boolean dismiss;
     private boolean fullHeight;
-    private CustomDialog dialog;
+    private WeakReference<CustomDialog> dialog;
     private RecyclerView recyclerView;
     private RelativeLayout colorpicker_base;
     private LinearLayout buttons_layout;
@@ -66,7 +71,7 @@ public class ColorPicker {
     /**
      * Constructor
      */
-    public ColorPicker(Context context) {
+    public ColorPicker(Activity context) {
         dialogViewLayout = LayoutInflater.from(context).inflate(R.layout.color_palette_layout, null, false);
         colorpicker_base = dialogViewLayout.findViewById(R.id.colorpicker_base);
         recyclerView = dialogViewLayout.findViewById(R.id.color_palette);
@@ -74,7 +79,7 @@ public class ColorPicker {
         positiveButton = dialogViewLayout.findViewById(R.id.positive);
         negativeButton = dialogViewLayout.findViewById(R.id.negative);
 
-        this.context = context;
+        this.context = new WeakReference<>(context);
         this.dismiss = true;
         this.marginColorButtonLeft = this.marginColorButtonTop = this.marginColorButtonRight = this.marginColorButtonBottom = 5;
         this.title = context.getString(R.string.colorpicker_dialog_title);
@@ -91,6 +96,10 @@ public class ColorPicker {
      * @return this
      */
     public ColorPicker setColors(int resId) {
+        Context context = this.context.get();
+        if (context == null)
+            return this;
+
         ta = context.getResources().obtainTypedArray(resId);
         colors = new ArrayList<>();
         for (int i = 0; i < ta.length(); i++) {
@@ -142,6 +151,10 @@ public class ColorPicker {
      * Show the Material Dialog
      */
     public void show() {
+        Activity context = this.context.get();
+        if (context == null)
+            return ;
+
         if (colors == null || colors.isEmpty())
             setColors();
 
@@ -150,7 +163,7 @@ public class ColorPicker {
             titleView.setText(title);
             titleView.setPadding(dip2px(paddingTitleLeft), dip2px(paddingTitleTop), dip2px(paddingTitleRight), dip2px(paddingTitleBottom));
         }
-        dialog = new CustomDialog(context, dialogViewLayout);
+        dialog = new WeakReference<>(new CustomDialog(context, dialogViewLayout));
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, columns);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -223,13 +236,18 @@ public class ColorPicker {
             }
         });
 
-        dialog.show();
-        //Keep dialog open when rotate
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        dialog.getWindow().setAttributes(lp);
+        Dialog dialog = this.dialog.get();
+
+        if (dialog != null && !context.isFinishing()) {
+            dialog.show();
+            //Keep dialog open when rotate
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(dialog.getWindow().getAttributes());
+            lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setAttributes(lp);
+        }
+
     }
 
     /**
@@ -369,6 +387,11 @@ public class ColorPicker {
      * @return this
      */
     public ColorPicker addListenerButton(String text, final OnButtonListener listener) {
+        Context context = this.context.get();
+        if (context == null)
+            return this;
+
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -421,8 +444,8 @@ public class ColorPicker {
      *
      * @return CustomDialog
      */
-    public CustomDialog getDialog() {
-        return dialog;
+    public @Nullable CustomDialog getDialog() {
+        return dialog.get();
     }
 
     /**
@@ -465,15 +488,9 @@ public class ColorPicker {
      * dismiss the dialog
      */
     public void dismissDialog() {
-        if (dialog != null) {
-            Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    dialog.dismiss();
-                }
-            };
-            handler.postDelayed(runnable, 250);
+        Dialog dialog = this.dialog.get();
+        if (dialog!= null && dialog.isShowing()) {
+            dialog.dismiss();
         }
     }
 
@@ -491,9 +508,9 @@ public class ColorPicker {
     /**
      * set padding to the title in DP
      *
-     * @param left dp
-     * @param top dp
-     * @param right dp
+     * @param left   dp
+     * @param top    dp
+     * @param right  dp
      * @param bottom dp
      * @return this
      */
@@ -506,10 +523,18 @@ public class ColorPicker {
     }
 
     private int getDimensionDp(int resID) {
+        Context context = this.context.get();
+        if (context == null)
+            return 0;
+
         return (int) (context.getResources().getDimension(resID) / context.getResources().getDisplayMetrics().density);
     }
 
     private int dip2px(float dpValue) {
+        Context context = this.context.get();
+        if (context == null)
+            return 0;
+
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
@@ -520,6 +545,10 @@ public class ColorPicker {
      * @return this
      */
     private ColorPicker setColors() {
+        Context context = this.context.get();
+        if (context == null)
+            return this;
+
         ta = context.getResources().obtainTypedArray(R.array.default_colors);
         colors = new ArrayList<>();
         for (int i = 0; i < ta.length(); i++) {

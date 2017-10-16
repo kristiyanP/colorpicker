@@ -1,9 +1,9 @@
 package petrov.kristiyan.colorpicker;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 
@@ -28,7 +29,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     private int marginButtonLeft = 0, marginButtonRight = 0, marginButtonTop = 3, marginButtonBottom = 3;
     private int buttonWidth = -1, buttonHeight = -1;
     private int buttonDrawable;
-    private CustomDialog dialog;
+    private WeakReference<CustomDialog> dialog;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
@@ -72,15 +73,9 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         }
     }
     private void dismissDialog() {
-        if (dialog != null) {
-            Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    dialog.dismiss();
-                }
-            };
-            handler.postDelayed(runnable, 250);
+        Dialog dialog = this.dialog.get();
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
         }
     }
 
@@ -92,7 +87,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         return colorPosition;
     }
 
-    public ColorViewAdapter(ArrayList<ColorPal> myDataset, ColorPicker.OnFastChooseColorListener onFastChooseColorListener,CustomDialog dialog) {
+    public ColorViewAdapter(ArrayList<ColorPal> myDataset, ColorPicker.OnFastChooseColorListener onFastChooseColorListener,WeakReference<CustomDialog> dialog) {
         mDataset = myDataset;
         this.dialog = dialog;
         this.onFastChooseColorListener = onFastChooseColorListener;
