@@ -35,22 +35,28 @@ public class SampleActivity extends AppCompatActivity {
                     colors.add("#FA9F00");
                     colors.add("#FF0000");
 
-                    colorPicker.setColors(colors).setDefaultColorButton(Color.parseColor("#f84c44")).setColumns(5).setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-                        @Override
-                        public void onChooseColor(int position, int color) {
-                            Log.d("position",""+position);// will be fired only when OK button was tapped
-                        }
+                    colorPicker
+                            .setDefaultColorButton(Color.parseColor("#f84c44"))
+                            .setColors(colors)
+                            .setColumns(5)
+                            .setRoundColorButton(true)
+                            .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                                @Override
+                                public void onChooseColor(int position, int color) {
+                                    Log.d("position", "" + position);// will be fired only when OK button was tapped
+                                }
 
-                        @Override
-                        public void onCancel() {
+                                @Override
+                                public void onCancel() {
 
-                        }
-                    }).addListenerButton("newButton", new ColorPicker.OnButtonListener() {
-                        @Override
-                        public void onClick(View v, int position, int color) {
-                            Log.d("position",""+position);
-                        }
-                    }).setRoundColorButton(true).show();
+                                }
+                            })
+                            .addListenerButton("newButton", new ColorPicker.OnButtonListener() {
+                                @Override
+                                public void onClick(View v, int position, int color) {
+                                    Log.d("position", "" + position);
+                                }
+                            }).show();
                 }
             });
         }

@@ -38,7 +38,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         public ViewHolder(View v) {
             super(v);
             //buttons settings
-            colorItem = (Button) v.findViewById(R.id.color);
+            colorItem = v.findViewById(R.id.color);
             colorItem.setTextColor(tickColor);
             colorItem.setBackgroundResource(buttonDrawable);
             colorItem.setOnClickListener(this);
@@ -50,7 +50,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
                 layoutParams.height = buttonHeight;
 
             //relative layout settings
-            LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.linearLayout);
+            LinearLayout linearLayout = v.findViewById(R.id.linearLayout);
             GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) linearLayout.getLayoutParams();
             lp.setMargins(marginLeft, marginTop, marginRight, marginBottom);
         }
@@ -66,12 +66,13 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
             mDataset.get(getLayoutPosition()).setCheck(true);
             notifyItemChanged(colorPosition);
 
-            if (onFastChooseColorListener != null && dialog!= null) {
+            if (onFastChooseColorListener != null && dialog != null) {
                 onFastChooseColorListener.setOnFastChooseColorListener(colorPosition, colorSelected);
                 dismissDialog();
             }
         }
     }
+
     private void dismissDialog() {
         Dialog dialog = this.dialog.get();
         if (dialog != null && dialog.isShowing()) {
@@ -87,7 +88,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         return colorPosition;
     }
 
-    public ColorViewAdapter(ArrayList<ColorPal> myDataset, ColorPicker.OnFastChooseColorListener onFastChooseColorListener,WeakReference<CustomDialog> dialog) {
+    public ColorViewAdapter(ArrayList<ColorPal> myDataset, ColorPicker.OnFastChooseColorListener onFastChooseColorListener, WeakReference<CustomDialog> dialog) {
         mDataset = myDataset;
         this.dialog = dialog;
         this.onFastChooseColorListener = onFastChooseColorListener;
@@ -106,22 +107,27 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        int color = mDataset.get(position).getColor();
+
+        int textColor = ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK;
+
         if (mDataset.get(position).isCheck()) {
-            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 holder.colorItem.setText("✔");
-            }
-            else {
+            } else {
+
                 holder.colorItem.setText(Html.fromHtml("&#x2713;"));
             }
-        }
-        else
+        } else
             holder.colorItem.setText("");
+
+        holder.colorItem.setTextColor(tickColor == Color.WHITE ? textColor : tickColor);
         if (buttonDrawable != 0) {
-            holder.colorItem.getBackground().setColorFilter(mDataset.get(position).getColor(), PorterDuff.Mode.SRC_IN);
+            holder.colorItem.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         } else {
-            holder.colorItem.setBackgroundColor(mDataset.get(position).getColor());
+            holder.colorItem.setBackgroundColor(color);
         }
-        holder.colorItem.setTag(mDataset.get(position).getColor());
+        holder.colorItem.setTag(color);
     }
 
     @Override

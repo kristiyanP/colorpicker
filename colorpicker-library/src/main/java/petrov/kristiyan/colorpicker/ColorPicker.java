@@ -20,6 +20,9 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import static petrov.kristiyan.colorpicker.ColorUtils.dip2px;
+import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionDp;
+
 
 public class ColorPicker {
 
@@ -153,7 +156,7 @@ public class ColorPicker {
     public void show() {
         Activity context = this.context.get();
         if (context == null)
-            return ;
+            return;
 
         if (colors == null || colors.isEmpty())
             setColors();
@@ -161,7 +164,9 @@ public class ColorPicker {
         TextView titleView = dialogViewLayout.findViewById(R.id.title);
         if (title != null) {
             titleView.setText(title);
-            titleView.setPadding(dip2px(paddingTitleLeft), dip2px(paddingTitleTop), dip2px(paddingTitleRight), dip2px(paddingTitleBottom));
+            titleView.setPadding(
+                    dip2px(paddingTitleLeft, context), dip2px(paddingTitleTop, context),
+                    dip2px(paddingTitleRight, context), dip2px(paddingTitleBottom, context));
         }
         dialog = new WeakReference<>(new CustomDialog(context, dialogViewLayout));
 
@@ -188,10 +193,12 @@ public class ColorPicker {
             colorViewAdapter.setTickColor(tickColor);
         }
         if (marginColorButtonBottom != 0 || marginColorButtonLeft != 0 || marginColorButtonRight != 0 || marginColorButtonTop != 0) {
-            colorViewAdapter.setColorButtonMargin(dip2px(marginColorButtonLeft), dip2px(marginColorButtonTop), dip2px(marginColorButtonRight), dip2px(marginColorButtonBottom));
+            colorViewAdapter.setColorButtonMargin(
+                    dip2px(marginColorButtonLeft, context), dip2px(marginColorButtonTop, context),
+                    dip2px(marginColorButtonRight, context), dip2px(marginColorButtonBottom, context));
         }
         if (colorButtonHeight != 0 || colorButtonWidth != 0) {
-            colorViewAdapter.setColorButtonSize(dip2px(colorButtonWidth), dip2px(colorButtonHeight));
+            colorViewAdapter.setColorButtonSize(dip2px(colorButtonWidth, context), dip2px(colorButtonHeight, context));
         }
         if (roundColorButton) {
             setColorButtonDrawable(R.drawable.round_button);
@@ -397,13 +404,15 @@ public class ColorPicker {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
-        params.setMargins(dip2px(10), 0, 0, 0);
+        params.setMargins(dip2px(10, context), 0, 0, 0);
         Button button = new Button(context);
-        button.setMinWidth(getDimensionDp(R.dimen.action_button_min_width));
-        button.setMinimumWidth(getDimensionDp(R.dimen.action_button_min_width));
-        button.setPadding(getDimensionDp(R.dimen.action_button_padding_horizontal) + dip2px(5), 0, getDimensionDp(R.dimen.action_button_padding_horizontal) + dip2px(5), 0);
+        button.setMinWidth(getDimensionDp(R.dimen.action_button_min_width, context));
+        button.setMinimumWidth(getDimensionDp(R.dimen.action_button_min_width, context));
+        button.setPadding(
+                getDimensionDp(R.dimen.action_button_padding_horizontal, context) + dip2px(5, context), 0,
+                getDimensionDp(R.dimen.action_button_padding_horizontal, context) + dip2px(5, context), 0);
         button.setBackgroundResource(R.drawable.button);
-        button.setTextSize(getDimensionDp(R.dimen.action_button_text_size));
+        button.setTextSize(getDimensionDp(R.dimen.action_button_text_size, context));
         button.setTextColor(ContextCompat.getColor(context, R.color.black_de));
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -444,7 +453,9 @@ public class ColorPicker {
      *
      * @return CustomDialog
      */
-    public @Nullable CustomDialog getDialog() {
+    public
+    @Nullable
+    CustomDialog getDialog() {
         return dialog.get();
     }
 
@@ -489,7 +500,7 @@ public class ColorPicker {
      */
     public void dismissDialog() {
         Dialog dialog = this.dialog.get();
-        if (dialog!= null && dialog.isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
@@ -520,23 +531,6 @@ public class ColorPicker {
         paddingTitleTop = top;
         paddingTitleBottom = bottom;
         return this;
-    }
-
-    private int getDimensionDp(int resID) {
-        Context context = this.context.get();
-        if (context == null)
-            return 0;
-
-        return (int) (context.getResources().getDimension(resID) / context.getResources().getDisplayMetrics().density);
-    }
-
-    private int dip2px(float dpValue) {
-        Context context = this.context.get();
-        if (context == null)
-            return 0;
-
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
     }
 
     /**
