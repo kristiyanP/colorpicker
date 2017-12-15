@@ -49,7 +49,7 @@ public class ColorPicker {
     private ColorViewAdapter colorViewAdapter;
     private boolean fastChooser;
     private TypedArray ta;
-    private WeakReference<Activity> context;
+    private WeakReference<Activity> mContext;
     private int columns;
     private String title;
     private int marginLeft, marginRight, marginTop, marginBottom;
@@ -61,7 +61,7 @@ public class ColorPicker {
     private boolean roundColorButton;
     private boolean dismiss;
     private boolean fullHeight;
-    private WeakReference<CustomDialog> dialog;
+    private WeakReference<CustomDialog> mDialog;
     private RecyclerView recyclerView;
     private RelativeLayout colorpicker_base;
     private LinearLayout buttons_layout;
@@ -82,7 +82,7 @@ public class ColorPicker {
         positiveButton = dialogViewLayout.findViewById(R.id.positive);
         negativeButton = dialogViewLayout.findViewById(R.id.negative);
 
-        this.context = new WeakReference<>(context);
+        this.mContext = new WeakReference<>(context);
         this.dismiss = true;
         this.marginColorButtonLeft = this.marginColorButtonTop = this.marginColorButtonRight = this.marginColorButtonBottom = 5;
         this.title = context.getString(R.string.colorpicker_dialog_title);
@@ -99,7 +99,10 @@ public class ColorPicker {
      * @return this
      */
     public ColorPicker setColors(int resId) {
-        Context context = this.context.get();
+        if (mContext == null)
+            return this;
+
+        Context context = mContext.get();
         if (context == null)
             return this;
 
@@ -154,7 +157,10 @@ public class ColorPicker {
      * Show the Material Dialog
      */
     public void show() {
-        Activity context = this.context.get();
+        if (mContext == null)
+            return;
+
+        Activity context = mContext.get();
         if (context == null)
             return;
 
@@ -168,12 +174,12 @@ public class ColorPicker {
                     dip2px(paddingTitleLeft, context), dip2px(paddingTitleTop, context),
                     dip2px(paddingTitleRight, context), dip2px(paddingTitleBottom, context));
         }
-        dialog = new WeakReference<>(new CustomDialog(context, dialogViewLayout));
+        mDialog = new WeakReference<>(new CustomDialog(context, dialogViewLayout));
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, columns);
         recyclerView.setLayoutManager(gridLayoutManager);
         if (fastChooser)
-            colorViewAdapter = new ColorViewAdapter(colors, onFastChooseColorListener, dialog);
+            colorViewAdapter = new ColorViewAdapter(colors, onFastChooseColorListener, mDialog);
         else
             colorViewAdapter = new ColorViewAdapter(colors);
 
@@ -243,11 +249,15 @@ public class ColorPicker {
             }
         });
 
-        Dialog dialog = this.dialog.get();
+        if (mDialog == null) {
+            return;
+        }
+
+        Dialog dialog = mDialog.get();
 
         if (dialog != null && !context.isFinishing()) {
             dialog.show();
-            //Keep dialog open when rotate
+            //Keep mDialog open when rotate
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             lp.copyFrom(dialog.getWindow().getAttributes());
             lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -343,7 +353,7 @@ public class ColorPicker {
     }
 
     /**
-     * set a fast listener ( it shows a dialog without buttons and the event fires as soon you select a color )
+     * set a fast listener ( it shows a mDialog without buttons and the event fires as soon you select a color )
      *
      * @param listener OnFastChooseColorListener
      * @return this
@@ -394,7 +404,10 @@ public class ColorPicker {
      * @return this
      */
     public ColorPicker addListenerButton(String text, final OnButtonListener listener) {
-        Context context = this.context.get();
+        if (mContext == null)
+            return this;
+
+        Context context = mContext.get();
         if (context == null)
             return this;
 
@@ -428,7 +441,7 @@ public class ColorPicker {
     }
 
     /**
-     * set if to dismiss the dialog or not on button listener click, by default is set to true
+     * set if to dismiss the mDialog or not on button listener click, by default is set to true
      *
      * @param dismiss boolean
      * @return this
@@ -449,18 +462,20 @@ public class ColorPicker {
     }
 
     /**
-     * getDialog if you need more options
+     * getmDialog if you need more options
      *
      * @return CustomDialog
      */
     public
     @Nullable
-    CustomDialog getDialog() {
-        return dialog.get();
+    CustomDialog getmDialog() {
+        if (mDialog == null)
+            return null;
+        return mDialog.get();
     }
 
     /**
-     * getDialogViewLayout is the view inflated into the dialog
+     * getDialogViewLayout is the view inflated into the mDialog
      *
      * @return View
      */
@@ -496,10 +511,13 @@ public class ColorPicker {
     }
 
     /**
-     * dismiss the dialog
+     * dismiss the mDialog
      */
     public void dismissDialog() {
-        Dialog dialog = this.dialog.get();
+        if (mDialog == null)
+            return;
+
+        Dialog dialog = mDialog.get();
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -539,7 +557,10 @@ public class ColorPicker {
      * @return this
      */
     private ColorPicker setColors() {
-        Context context = this.context.get();
+        if (mContext == null)
+            return this;
+
+        Context context = mContext.get();
         if (context == null)
             return this;
 

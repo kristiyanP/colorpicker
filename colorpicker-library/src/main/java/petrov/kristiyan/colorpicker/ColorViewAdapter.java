@@ -29,7 +29,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     private int marginButtonLeft = 0, marginButtonRight = 0, marginButtonTop = 3, marginButtonBottom = 3;
     private int buttonWidth = -1, buttonHeight = -1;
     private int buttonDrawable;
-    private WeakReference<CustomDialog> dialog;
+    private WeakReference<CustomDialog> mDialog;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
@@ -66,7 +66,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
             mDataset.get(getLayoutPosition()).setCheck(true);
             notifyItemChanged(colorPosition);
 
-            if (onFastChooseColorListener != null && dialog != null) {
+            if (onFastChooseColorListener != null && mDialog != null) {
                 onFastChooseColorListener.setOnFastChooseColorListener(colorPosition, colorSelected);
                 dismissDialog();
             }
@@ -74,7 +74,9 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     }
 
     private void dismissDialog() {
-        Dialog dialog = this.dialog.get();
+        if(mDialog == null)
+            return;
+        Dialog dialog = mDialog.get();
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -90,7 +92,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
     public ColorViewAdapter(ArrayList<ColorPal> myDataset, ColorPicker.OnFastChooseColorListener onFastChooseColorListener, WeakReference<CustomDialog> dialog) {
         mDataset = myDataset;
-        this.dialog = dialog;
+        mDialog = dialog;
         this.onFastChooseColorListener = onFastChooseColorListener;
     }
 
