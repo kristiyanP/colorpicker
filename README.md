@@ -20,54 +20,63 @@ compile 'petrov.kristiyan:colorpicker-library:1.1.8'
 
   Example 1 : 
 ```java
-  ColorPicker colorPicker = new ColorPicker(activity);
-  colorPicker.show();
-  colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-      @Override
-      public void onChooseColor(int position,int color) {
-            // put code
-      }
-      
-      @Override
-      public void onCancel(){
+ColorPicker colorPicker = new ColorPicker(activity);
+colorPicker.show();
+colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+	@Override
+	public void onChooseColor(int position,int color) {
+	    // put code
+	}
+
+	@Override
+	public void onCancel(){
 	// put code
-      }
-  });
+	}
+});
 ```  
   Example 2 : 
 ```java
-  final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
-  colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
-		@Override
-		public void setOnFastChooseColorListener(int position, int color) {
-		  // put code
-		}
-	      
-		@Override
-		public void onCancel(){
-		// put code
-		}
-	      }).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).show();
+final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
+colorPicker.setFastChooser(new ColorPicker.OnFastChooseColorListener() {
+	@Override
+	public void setOnFastChooseColorListener(int position, int color) {
+	  // put code
+	}
+
+	@Override
+	public void onCancel(){
+	// put code
+	}
+})
+.setDefaultColor(Color.parseColor("#f84c44"))
+.setColumns(5)
+.show();
 ```
   Example 3 : 
 ```java
-  final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
-  colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-		      @Override
-		      public void onChooseColor(int position,int color) {
-		            // put code
-		      }
-		      
-		      @Override
-		      public void onCancel(){
-		      	// put code
-		      }
-		      }).addListenerButton("newButton", new ColorPicker.OnButtonListener() {
-                        @Override
-                        public void onClick(View v, int position, int color) {
-                            // put code
-                        }
-            }).disableDefaultButtons(true).setDefaultColor(Color.parseColor("#f84c44")).setColumns(5).setDialogFullHeight().show();
+final ColorPicker colorPicker = new ColorPicker(SampleActivity.this);
+colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+	@Override
+	public void onChooseColor(int position,int color) {
+	// put code
+	}
+
+	@Override
+	public void onCancel(){
+	// put code
+	}
+})
+.addListenerButton("newButton", new ColorPicker.OnButtonListener() {
+	@Override
+	public void onClick(View v, int position, int color) {
+	    // put code
+	}
+})
+.disableDefaultButtons(true)
+.setDefaultColor(Color.parseColor("#f84c44"))
+.setColumns(5)
+.setDialogFullHeight()
+.show();
 ```
 
 
