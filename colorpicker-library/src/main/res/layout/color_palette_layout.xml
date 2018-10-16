@@ -5,7 +5,7 @@
     android:padding="15dp"
     android:id="@+id/colorpicker_base">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:layout_marginStart="5dp"
         android:textStyle="bold" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/color_palette"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,14 +34,14 @@
         android:id="@+id/buttons_layout"
         android:gravity="end">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/positive"
             style="@style/ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/lite_blue" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/negative"
             style="@style/ActionButton"
             android:layout_width="wrap_content"

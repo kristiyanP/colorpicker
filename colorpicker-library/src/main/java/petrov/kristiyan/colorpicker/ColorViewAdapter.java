@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +35,8 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-        public Button colorItem;
+
+        public AppCompatButton colorItem;
 
         public ViewHolder(View v) {
             super(v);

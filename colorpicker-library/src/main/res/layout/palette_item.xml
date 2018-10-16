@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/color"
         android:layout_width="40dp"
         android:layout_height="40dp" />

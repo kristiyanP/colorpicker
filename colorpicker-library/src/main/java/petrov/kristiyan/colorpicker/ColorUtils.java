@@ -2,7 +2,7 @@ package petrov.kristiyan.colorpicker;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 /**
  * @author Kristiyan Petrov

@@ -5,20 +5,22 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static petrov.kristiyan.colorpicker.ColorUtils.dip2px;
 import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionDp;
@@ -69,7 +71,7 @@ public class ColorPicker {
     private int paddingTitleLeft, paddingTitleRight, paddingTitleBottom, paddingTitleTop;
     private View dialogViewLayout;
     private boolean disableDefaultButtons;
-    private Button positiveButton, negativeButton;
+    private AppCompatButton positiveButton, negativeButton;
 
     /**
      * Constructor
@@ -167,7 +169,7 @@ public class ColorPicker {
         if (colors == null || colors.isEmpty())
             setColors();
 
-        TextView titleView = dialogViewLayout.findViewById(R.id.title);
+        AppCompatTextView titleView = dialogViewLayout.findViewById(R.id.title);
         if (title != null) {
             titleView.setText(title);
             titleView.setPadding(
