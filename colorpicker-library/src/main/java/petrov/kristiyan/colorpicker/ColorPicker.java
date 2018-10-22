@@ -394,6 +394,8 @@ public class ColorPicker {
             }
         });
         button.setText(text);
+        if (button.getParent() != null)
+            buttons_layout.removeView(button);
         buttons_layout.addView(button);
         return this;
     }
@@ -437,6 +439,9 @@ public class ColorPicker {
             }
         });
         button.setText(text);
+        if (button.getParent() != null)
+            buttons_layout.removeView(button);
+
         buttons_layout.addView(button);
         button.setLayoutParams(params);
         return this;

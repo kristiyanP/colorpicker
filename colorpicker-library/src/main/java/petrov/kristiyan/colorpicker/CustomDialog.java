@@ -17,7 +17,7 @@ public class CustomDialog extends AppCompatDialog {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(view);
         super.onCreate(savedInstanceState);
+        setContentView(view);
     }
 }
