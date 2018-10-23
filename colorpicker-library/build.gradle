@@ -19,7 +19,7 @@ def projectLicenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.txt"
 def projectKeywords = ['color', 'library', 'colorpicker','android']
 def developerFullName = "Kristiyan Petrov"
 group = projectGroup
-version = "1.1.9"
+version = "1.1.10"
 
 def sdkVersion = 28
 def toolsVersion = '28.0.3'
