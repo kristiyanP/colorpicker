@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
-def sdkVersion = 28
-def toolsVersion = '28.0.3'
+def sdkVersion = 29
+def toolsVersion = '29.0.2'
 
 android {
     compileSdkVersion sdkVersion
@@ -24,16 +24,14 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-beta02', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-beta02')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
 
     testImplementation 'junit:junit:4.12'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
 
     implementation project(':colorpicker-library')
 //    implementation 'petrov.kristiyan:colorpicker-library:1.1.9'
