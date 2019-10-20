@@ -1,20 +1,20 @@
 package petrov.kristiyan.colorpicker;
 
 import android.app.Dialog;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Build;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
     }
 
     private void dismissDialog() {
-        if(mDialog == null)
+        if (mDialog == null)
             return;
         Dialog dialog = mDialog.get();
         if (dialog != null && dialog.isShowing()) {
@@ -128,7 +128,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
 
         holder.colorItem.setTextColor(tickColor == Color.WHITE ? textColor : tickColor);
         if (buttonDrawable != 0) {
-            holder.colorItem.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            holder.colorItem.getBackground().setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_IN));
         } else {
             holder.colorItem.setBackgroundColor(color);
         }

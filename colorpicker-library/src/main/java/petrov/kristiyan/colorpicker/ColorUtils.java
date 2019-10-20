@@ -1,7 +1,10 @@
 package petrov.kristiyan.colorpicker;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.TypedValue;
+
 import androidx.annotation.ColorInt;
 
 /**
@@ -27,13 +30,13 @@ public class ColorUtils {
         return yiq < 192;
     }
 
-    public static int getDimensionDp(int resID, Context context) {
-       return (int) (context.getResources().getDimension(resID) / context.getResources().getDisplayMetrics().density);
+    public static int getDimensionPX(int resID, Context context) {
+        return context.getResources().getDimensionPixelSize(resID);
     }
 
-    public static int dip2px(float dpValue, Context context) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+    public static float dip2px(float dpValue, Context context) {
+        Resources r = context.getResources();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, r.getDisplayMetrics());
     }
 
 }

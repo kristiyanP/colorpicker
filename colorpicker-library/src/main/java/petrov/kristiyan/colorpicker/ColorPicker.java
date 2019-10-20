@@ -5,15 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -22,8 +20,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static petrov.kristiyan.colorpicker.ColorUtils.dip2px;
-import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionDp;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+
+import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionPX;
 
 
 public class ColorPicker {
@@ -86,7 +86,7 @@ public class ColorPicker {
 
         this.mContext = new WeakReference<>(context);
         this.dismiss = true;
-        this.marginColorButtonLeft = this.marginColorButtonTop = this.marginColorButtonRight = this.marginColorButtonBottom = 5;
+        this.marginColorButtonLeft = this.marginColorButtonTop = this.marginColorButtonRight = this.marginColorButtonBottom = (int) ColorUtils.dip2px(5,context);
         this.title = context.getString(R.string.colorpicker_dialog_title);
         this.negativeText = context.getString(R.string.colorpicker_dialog_cancel);
         this.positiveText = context.getString(R.string.colorpicker_dialog_ok);
@@ -172,9 +172,7 @@ public class ColorPicker {
         AppCompatTextView titleView = dialogViewLayout.findViewById(R.id.title);
         if (title != null) {
             titleView.setText(title);
-            titleView.setPadding(
-                    dip2px(paddingTitleLeft, context), dip2px(paddingTitleTop, context),
-                    dip2px(paddingTitleRight, context), dip2px(paddingTitleBottom, context));
+            titleView.setPadding(paddingTitleLeft, paddingTitleTop, paddingTitleRight, paddingTitleBottom);
         }
         mDialog = new WeakReference<>(new CustomDialog(context, dialogViewLayout));
 
@@ -201,12 +199,10 @@ public class ColorPicker {
             colorViewAdapter.setTickColor(tickColor);
         }
         if (marginColorButtonBottom != 0 || marginColorButtonLeft != 0 || marginColorButtonRight != 0 || marginColorButtonTop != 0) {
-            colorViewAdapter.setColorButtonMargin(
-                    dip2px(marginColorButtonLeft, context), dip2px(marginColorButtonTop, context),
-                    dip2px(marginColorButtonRight, context), dip2px(marginColorButtonBottom, context));
+            colorViewAdapter.setColorButtonMargin(marginColorButtonLeft, marginColorButtonTop, marginColorButtonRight, marginColorButtonBottom);
         }
         if (colorButtonHeight != 0 || colorButtonWidth != 0) {
-            colorViewAdapter.setColorButtonSize(dip2px(colorButtonWidth, context), dip2px(colorButtonHeight, context));
+            colorViewAdapter.setColorButtonSize(colorButtonWidth, colorButtonHeight);
         }
         if (roundColorButton) {
             setColorButtonDrawable(R.drawable.round_button);
@@ -320,7 +316,7 @@ public class ColorPicker {
      * @param height height
      * @return this
      */
-    public ColorPicker setColorButtonSize(int width, int height) {
+    public ColorPicker setColorButtonSizePX(int width, int height) {
         this.colorButtonWidth = width;
         this.colorButtonHeight = height;
         return this;
@@ -335,7 +331,7 @@ public class ColorPicker {
      * @param bottom bottom
      * @return this
      */
-    public ColorPicker setColorButtonMargin(int left, int top, int right, int bottom) {
+    public ColorPicker setColorButtonMarginPX(int left, int top, int right, int bottom) {
         this.marginColorButtonLeft = left;
         this.marginColorButtonTop = top;
         this.marginColorButtonRight = right;
@@ -421,15 +417,13 @@ public class ColorPicker {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
-        params.setMargins(dip2px(10, context), 0, 0, 0);
+        params.setMargins(getDimensionPX(R.dimen.action_button_left_space, context), 0, 0, 0);
         Button button = new Button(context);
-        button.setMinWidth(getDimensionDp(R.dimen.action_button_min_width, context));
-        button.setMinimumWidth(getDimensionDp(R.dimen.action_button_min_width, context));
-        button.setPadding(
-                getDimensionDp(R.dimen.action_button_padding_horizontal, context) + dip2px(5, context), 0,
-                getDimensionDp(R.dimen.action_button_padding_horizontal, context) + dip2px(5, context), 0);
+        button.setMinWidth(getDimensionPX(R.dimen.action_button_min_width, context));
+        button.setMinimumWidth(getDimensionPX(R.dimen.action_button_min_width, context));
+        button.setPadding(getDimensionPX(R.dimen.action_button_padding_horizontal, context), 0, getDimensionPX(R.dimen.action_button_padding_horizontal, context), 0);
         button.setBackgroundResource(R.drawable.button);
-        button.setTextSize(getDimensionDp(R.dimen.action_button_text_size, context));
+        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimensionPixelSize(R.dimen.action_button_text_size));
         button.setTextColor(ContextCompat.getColor(context, R.color.black_de));
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -550,7 +544,7 @@ public class ColorPicker {
      * @param bottom dp
      * @return this
      */
-    public ColorPicker setTitlePadding(int left, int top, int right, int bottom) {
+    public ColorPicker setTitlePaddingPX(int left, int top, int right, int bottom) {
         paddingTitleLeft = left;
         paddingTitleRight = right;
         paddingTitleTop = top;
@@ -579,7 +573,7 @@ public class ColorPicker {
         return this;
     }
 
-    private ColorPicker setMargin(int left, int top, int right, int bottom) {
+    private ColorPicker setMarginPX(int left, int top, int right, int bottom) {
         this.marginLeft = left;
         this.marginRight = right;
         this.marginTop = top;
