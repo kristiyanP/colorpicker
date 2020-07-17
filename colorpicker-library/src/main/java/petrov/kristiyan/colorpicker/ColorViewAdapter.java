@@ -155,6 +155,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
                 colorPal.setCheck(true);
                 colorPosition = i;
                 notifyItemChanged(i);
+                colorSelected = color;
             }
         }
     }
