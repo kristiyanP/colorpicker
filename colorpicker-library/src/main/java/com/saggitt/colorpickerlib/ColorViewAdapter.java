@@ -1,4 +1,4 @@
-package petrov.kristiyan.colorpicker;
+package com.saggitt.colorpickerlib;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.ViewHolder> {
 
-    private ColorPicker.OnFastChooseColorListener onFastChooseColorListener;
+    private OnFastChooseColorListener onFastChooseColorListener;
     private ArrayList<ColorPal> mDataset;
     private int colorPosition = -1;
     private int colorSelected;
@@ -93,7 +93,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         return colorPosition;
     }
 
-    public ColorViewAdapter(ArrayList<ColorPal> myDataset, ColorPicker.OnFastChooseColorListener onFastChooseColorListener, WeakReference<CustomDialog> dialog) {
+    public ColorViewAdapter(ArrayList<ColorPal> myDataset, OnFastChooseColorListener onFastChooseColorListener, WeakReference<CustomDialog> dialog) {
         mDataset = myDataset;
         mDialog = dialog;
         this.onFastChooseColorListener = onFastChooseColorListener;

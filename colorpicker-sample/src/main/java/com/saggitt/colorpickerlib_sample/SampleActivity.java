@@ -1,4 +1,4 @@
-package petrov.kristiyan.colorpicker_sample;
+package com.saggitt.colorpickerlib_sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -6,12 +6,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.saggitt.colorpickerlib.ColorPicker;
+import com.saggitt.colorpickerlib.OnChooseColorListener;
 
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
-import petrov.kristiyan.colorpicker.ColorPicker;
-
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -41,7 +41,7 @@ public class SampleActivity extends AppCompatActivity {
                             .setColors(colors)
                             .setColumns(5)
                             .setRoundColorButton(true)
-                            .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                            .setOnChooseColorListener(new OnChooseColorListener() {
                                 @Override
                                 public void onChooseColor(int position, int color) {
                                     Log.d("position", "" + position);// will be fired only when OK button was tapped

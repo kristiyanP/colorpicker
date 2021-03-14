@@ -10,4 +10,10 @@
         <item name="android:background">@drawable/button</item>
         <item name="android:textSize">@dimen/action_button_text_size</item>
     </style>
+
+    <style name="MaterialDialog.Light" parent="Theme.AppCompat.Light.Dialog">
+        <item name="tabIndicator">@drawable/tab_indicator</item>
+        <item name="android:background">?colorBackgroundFloating</item>
+    </style>
+
 </resources>

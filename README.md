@@ -1,4 +1,4 @@
-# ColorPicker [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ColorPicker-green.svg?style=true)](https://android-arsenal.com/details/1/3121) [![Build Status](https://travis-ci.org/kristiyanP/colorpicker.svg?branch=master)](https://travis-ci.org/kristiyanP/colorpicker)[![Download](https://api.bintray.com/packages/petrovkristiyan/maven/colorpicker/images/download.svg)](https://bintray.com/petrovkristiyan/maven/colorpicker/_latestVersion)
+#ColorPickerLib
 
 # A simple Android color picker library
 
@@ -13,7 +13,7 @@
 Download the [latest JAR](https://bintray.com/petrovkristiyan/maven/petrov.kristiyan.colorpicker/view) or grab via Gradle:
 
 ```groovy
-implementation 'petrov.kristiyan:colorpicker-library:1.1.10'
+implementation 'com.saggitt:colorpicker-library:1.1.10'
 ```
 
 ## How to use ##
@@ -145,32 +145,10 @@ setPositiveButton(String text, OnButtonListener listener); // not present from v
 setNegativeButton(String text, OnButtonListener listener); // not present from version 1.1.0
 ```
 
+## Credits
+The original project was developed by Petrov Kristiyan
+[https://github.com/kristiyanP/colorpicker](https://github.com/kristiyanP/colorpicker)
 
 ## Additional Credits ##
 for the Material Dialog library for button design specs and implementation
   [https://github.com/drakeet/MaterialDialog](https://github.com/drakeet/MaterialDialog)
-
-
-## License ##
-
-The MIT License
-
-Copyright (c) 2016 Petrov Kristiyan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.

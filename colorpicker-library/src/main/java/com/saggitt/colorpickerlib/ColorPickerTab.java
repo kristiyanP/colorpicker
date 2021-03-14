@@ -1,6 +1,22 @@
-package petrov.kristiyan.colorpicker;
+/*
+ *  This file is part of ColorPickerLib
+ *  Copyright (c) 2021   Saul Henriquez
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.saggitt.colorpickerlib;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,36 +28,26 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import static petrov.kristiyan.colorpicker.ColorUtils.dip2px;
-import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionDp;
+import com.google.android.material.tabs.TabLayout;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
-public class ColorPicker {
+import static com.saggitt.colorpickerlib.ColorUtils.dip2px;
+import static com.saggitt.colorpickerlib.ColorUtils.getDimensionDp;
+
+public class ColorPickerTab {
 
     private OnChooseColorListener onChooseColorListener;
     private OnFastChooseColorListener onFastChooseColorListener;
-
-    public interface OnChooseColorListener {
-        void onChooseColor(int position, int color);
-
-        void onCancel();
-    }
-
-    public interface OnFastChooseColorListener {
-        void setOnFastChooseColorListener(int position, int color);
-
-        void onCancel();
-    }
 
     public interface OnButtonListener {
         void onClick(View v, int position, int color);
@@ -51,7 +57,7 @@ public class ColorPicker {
     private ColorViewAdapter colorViewAdapter;
     private boolean fastChooser;
     private TypedArray ta;
-    private WeakReference<Activity> mContext;
+    private Context mContext;
     private int columns;
     private String title;
     private int marginLeft, marginRight, marginTop, marginBottom;
@@ -59,32 +65,43 @@ public class ColorPicker {
     private int marginColorButtonLeft, marginColorButtonRight, marginColorButtonTop, marginColorButtonBottom;
     private int colorButtonWidth, colorButtonHeight;
     private int colorButtonDrawable;
-    private String negativeText, positiveText;
+    private final String negativeText;
+    private final String positiveText;
     private boolean roundColorButton;
     private boolean dismiss;
     private boolean fullHeight;
     private WeakReference<CustomDialog> mDialog;
-    private RecyclerView recyclerView;
-    private RelativeLayout colorpicker_base;
-    private LinearLayout buttons_layout;
+    private final RecyclerView recyclerView;
+    private final LinearLayout buttons_layout;
     private int default_color;
     private int paddingTitleLeft, paddingTitleRight, paddingTitleBottom, paddingTitleTop;
-    private View dialogViewLayout;
+    private final View dialogViewLayout;
     private boolean disableDefaultButtons;
-    private AppCompatButton positiveButton, negativeButton;
+    private final AppCompatButton positiveButton;
+    private final AppCompatButton negativeButton;
+    private View tabPresets;
 
-    /**
-     * Constructor
-     */
-    public ColorPicker(Activity context) {
-        dialogViewLayout = LayoutInflater.from(context).inflate(R.layout.color_palette_layout, null, false);
-        colorpicker_base = dialogViewLayout.findViewById(R.id.colorpicker_base);
+    public ColorPickerTab(Context context) {
+        dialogViewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_color_selector, null, false);
+        View tabCustom = dialogViewLayout.findViewById(R.id.tab_custom);
+        tabPresets = dialogViewLayout.findViewById(R.id.tab_presets);
+        View[] views = {tabCustom, tabPresets};
+        String[] titles = {context.getString(R.string.color_custom), context.getString(R.string.color_presets)};
+
+        ViewPager viewPager = dialogViewLayout.findViewById(R.id.color_pager);
+        viewPager.setOffscreenPageLimit(1);
+        viewPager.setAdapter(new CustomPagerAdapter(views, titles));
+
+        TabLayout tabLayout = dialogViewLayout.findViewById(R.id.color_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+
         recyclerView = dialogViewLayout.findViewById(R.id.color_palette);
         buttons_layout = dialogViewLayout.findViewById(R.id.buttons_layout);
         positiveButton = dialogViewLayout.findViewById(R.id.positive);
         negativeButton = dialogViewLayout.findViewById(R.id.negative);
 
-        this.mContext = new WeakReference<>(context);
+        mContext = context;
         this.dismiss = true;
         this.marginColorButtonLeft = this.marginColorButtonTop = this.marginColorButtonRight = this.marginColorButtonBottom = 5;
         this.title = context.getString(R.string.colorpicker_dialog_title);
@@ -100,15 +117,11 @@ public class ColorPicker {
      * @param resId Array resource
      * @return this
      */
-    public ColorPicker setColors(int resId) {
+    public ColorPickerTab setColors(int resId) {
         if (mContext == null)
             return this;
 
-        Context context = mContext.get();
-        if (context == null)
-            return this;
-
-        ta = context.getResources().obtainTypedArray(resId);
+        ta = mContext.getResources().obtainTypedArray(resId);
         colors = new ArrayList<>();
         for (int i = 0; i < ta.length(); i++) {
             colors.add(new ColorPal(ta.getColor(i, 0), false));
@@ -122,7 +135,7 @@ public class ColorPicker {
      * @param colorsHexList List of hex values of the colors
      * @return this
      */
-    public ColorPicker setColors(ArrayList<String> colorsHexList) {
+    public ColorPickerTab setColors(ArrayList<String> colorsHexList) {
         colors = new ArrayList<>();
         for (int i = 0; i < colorsHexList.size(); i++) {
             colors.add(new ColorPal(Color.parseColor(colorsHexList.get(i)), false));
@@ -136,7 +149,7 @@ public class ColorPicker {
      * @param colorsList list of colors
      * @return this
      */
-    public ColorPicker setColors(int... colorsList) {
+    public ColorPickerTab setColors(int... colorsList) {
         colors = new ArrayList<>();
         for (int aColorsList : colorsList) {
             colors.add(new ColorPal(aColorsList, false));
@@ -150,7 +163,7 @@ public class ColorPicker {
      * @param color int
      * @return this
      */
-    public ColorPicker setDefaultColorButton(int color) {
+    public ColorPickerTab setDefaultColorButton(int color) {
         this.default_color = color;
         return this;
     }
@@ -162,10 +175,6 @@ public class ColorPicker {
         if (mContext == null)
             return;
 
-        Activity context = mContext.get();
-        if (context == null)
-            return;
-
         if (colors == null || colors.isEmpty())
             setColors();
 
@@ -173,12 +182,12 @@ public class ColorPicker {
         if (title != null) {
             titleView.setText(title);
             titleView.setPadding(
-                    dip2px(paddingTitleLeft, context), dip2px(paddingTitleTop, context),
-                    dip2px(paddingTitleRight, context), dip2px(paddingTitleBottom, context));
+                    dip2px(paddingTitleLeft, mContext), dip2px(paddingTitleTop, mContext),
+                    dip2px(paddingTitleRight, mContext), dip2px(paddingTitleBottom, mContext));
         }
-        mDialog = new WeakReference<>(new CustomDialog(context, dialogViewLayout));
+        mDialog = new WeakReference<>(new CustomDialog(mContext, dialogViewLayout));
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, columns);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, columns);
         recyclerView.setLayoutManager(gridLayoutManager);
         if (fastChooser)
             colorViewAdapter = new ColorViewAdapter(colors, onFastChooseColorListener, mDialog);
@@ -202,11 +211,11 @@ public class ColorPicker {
         }
         if (marginColorButtonBottom != 0 || marginColorButtonLeft != 0 || marginColorButtonRight != 0 || marginColorButtonTop != 0) {
             colorViewAdapter.setColorButtonMargin(
-                    dip2px(marginColorButtonLeft, context), dip2px(marginColorButtonTop, context),
-                    dip2px(marginColorButtonRight, context), dip2px(marginColorButtonBottom, context));
+                    dip2px(marginColorButtonLeft, mContext), dip2px(marginColorButtonTop, mContext),
+                    dip2px(marginColorButtonRight, mContext), dip2px(marginColorButtonBottom, mContext));
         }
         if (colorButtonHeight != 0 || colorButtonWidth != 0) {
-            colorViewAdapter.setColorButtonSize(dip2px(colorButtonWidth, context), dip2px(colorButtonHeight, context));
+            colorViewAdapter.setColorButtonSize(dip2px(colorButtonWidth, mContext), dip2px(colorButtonHeight, mContext));
         }
         if (roundColorButton) {
             setColorButtonDrawable(R.drawable.round_button);
@@ -257,7 +266,7 @@ public class ColorPicker {
 
         Dialog dialog = mDialog.get();
 
-        if (dialog != null && !context.isFinishing()) {
+        if (dialog != null) {
             dialog.show();
             //Keep mDialog open when rotate
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -275,7 +284,7 @@ public class ColorPicker {
      * @param c Columns number
      * @return this
      */
-    public ColorPicker setColumns(int c) {
+    public ColorPickerTab setColumns(int c) {
         columns = c;
         return this;
     }
@@ -286,7 +295,7 @@ public class ColorPicker {
      * @param title Title
      * @return this
      */
-    public ColorPicker setTitle(String title) {
+    public ColorPickerTab setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -297,7 +306,7 @@ public class ColorPicker {
      * @param color Color
      * @return this
      */
-    public ColorPicker setColorButtonTickColor(int color) {
+    public ColorPickerTab setColorButtonTickColor(int color) {
         this.tickColor = color;
         return this;
     }
@@ -308,7 +317,7 @@ public class ColorPicker {
      * @param drawable Resource
      * @return this
      */
-    public ColorPicker setColorButtonDrawable(int drawable) {
+    public ColorPickerTab setColorButtonDrawable(int drawable) {
         this.colorButtonDrawable = drawable;
         return this;
     }
@@ -320,7 +329,7 @@ public class ColorPicker {
      * @param height height
      * @return this
      */
-    public ColorPicker setColorButtonSize(int width, int height) {
+    public ColorPickerTab setColorButtonSize(int width, int height) {
         this.colorButtonWidth = width;
         this.colorButtonHeight = height;
         return this;
@@ -335,7 +344,7 @@ public class ColorPicker {
      * @param bottom bottom
      * @return this
      */
-    public ColorPicker setColorButtonMargin(int left, int top, int right, int bottom) {
+    public ColorPickerTab setColorButtonMargin(int left, int top, int right, int bottom) {
         this.marginColorButtonLeft = left;
         this.marginColorButtonTop = top;
         this.marginColorButtonRight = right;
@@ -349,7 +358,7 @@ public class ColorPicker {
      * @param roundButton true if you want a round button
      * @return this
      */
-    public ColorPicker setRoundColorButton(boolean roundButton) {
+    public ColorPickerTab setRoundColorButton(boolean roundButton) {
         this.roundColorButton = roundButton;
         return this;
     }
@@ -360,7 +369,7 @@ public class ColorPicker {
      * @param listener OnFastChooseColorListener
      * @return this
      */
-    public ColorPicker setOnFastChooseColorListener(OnFastChooseColorListener listener) {
+    public ColorPickerTab setOnFastChooseColorListener(OnFastChooseColorListener listener) {
         this.fastChooser = true;
         buttons_layout.setVisibility(View.GONE);
         this.onFastChooseColorListener = listener;
@@ -373,7 +382,7 @@ public class ColorPicker {
      *
      * @param listener OnChooseColorListener
      */
-    public ColorPicker setOnChooseColorListener(OnChooseColorListener listener) {
+    public ColorPickerTab setOnChooseColorListener(OnChooseColorListener listener) {
         onChooseColorListener = listener;
         return this;
     }
@@ -386,7 +395,7 @@ public class ColorPicker {
      * @param listener listener
      * @return this
      */
-    public ColorPicker addListenerButton(String text, Button button, final OnButtonListener listener) {
+    public ColorPickerTab addListenerButton(String text, Button button, final OnButtonListener listener) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -407,30 +416,25 @@ public class ColorPicker {
      * @param listener OnButtonListener
      * @return this
      */
-    public ColorPicker addListenerButton(String text, final OnButtonListener listener) {
+    public ColorPickerTab addListenerButton(String text, final OnButtonListener listener) {
         if (mContext == null)
             return this;
-
-        Context context = mContext.get();
-        if (context == null)
-            return this;
-
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
-        params.setMargins(dip2px(10, context), 0, 0, 0);
-        Button button = new Button(context);
-        button.setMinWidth(getDimensionDp(R.dimen.action_button_min_width, context));
-        button.setMinimumWidth(getDimensionDp(R.dimen.action_button_min_width, context));
+        params.setMargins(dip2px(10, mContext), 0, 0, 0);
+        Button button = new Button(mContext);
+        button.setMinWidth(getDimensionDp(R.dimen.action_button_min_width, mContext));
+        button.setMinimumWidth(getDimensionDp(R.dimen.action_button_min_width, mContext));
         button.setPadding(
-                getDimensionDp(R.dimen.action_button_padding_horizontal, context) + dip2px(5, context), 0,
-                getDimensionDp(R.dimen.action_button_padding_horizontal, context) + dip2px(5, context), 0);
+                getDimensionDp(R.dimen.action_button_padding_horizontal, mContext) + dip2px(5, mContext), 0,
+                getDimensionDp(R.dimen.action_button_padding_horizontal, mContext) + dip2px(5, mContext), 0);
         button.setBackgroundResource(R.drawable.button);
-        button.setTextSize(getDimensionDp(R.dimen.action_button_text_size, context));
-        button.setTextColor(ContextCompat.getColor(context, R.color.black_de));
+        button.setTextSize(getDimensionDp(R.dimen.action_button_text_size, mContext));
+        button.setTextColor(ContextCompat.getColor(mContext, R.color.black_de));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -453,7 +457,7 @@ public class ColorPicker {
      * @param dismiss boolean
      * @return this
      */
-    public ColorPicker setDismissOnButtonListenerClick(boolean dismiss) {
+    public ColorPickerTab setDismissOnButtonListenerClick(boolean dismiss) {
         this.dismiss = dismiss;
         return this;
     }
@@ -463,7 +467,7 @@ public class ColorPicker {
      *
      * @return this
      */
-    public ColorPicker setDialogFullHeight() {
+    public ColorPickerTab setDialogFullHeight() {
         this.fullHeight = true;
         return this;
     }
@@ -495,8 +499,8 @@ public class ColorPicker {
      *
      * @return RelativeLayout
      */
-    public RelativeLayout getDialogBaseLayout() {
-        return colorpicker_base;
+    public View getDialogBaseLayout() {
+        return tabPresets;
     }
 
     /**
@@ -536,7 +540,7 @@ public class ColorPicker {
      * @param disableDefaultButtons boolean
      * @return this
      */
-    public ColorPicker disableDefaultButtons(boolean disableDefaultButtons) {
+    public ColorPickerTab disableDefaultButtons(boolean disableDefaultButtons) {
         this.disableDefaultButtons = disableDefaultButtons;
         return this;
     }
@@ -550,7 +554,7 @@ public class ColorPicker {
      * @param bottom dp
      * @return this
      */
-    public ColorPicker setTitlePadding(int left, int top, int right, int bottom) {
+    public ColorPickerTab setTitlePadding(int left, int top, int right, int bottom) {
         paddingTitleLeft = left;
         paddingTitleRight = right;
         paddingTitleTop = top;
@@ -563,15 +567,11 @@ public class ColorPicker {
      *
      * @return this
      */
-    private ColorPicker setColors() {
+    private ColorPickerTab setColors() {
         if (mContext == null)
             return this;
 
-        Context context = mContext.get();
-        if (context == null)
-            return this;
-
-        ta = context.getResources().obtainTypedArray(R.array.default_colors);
+        ta = mContext.getResources().obtainTypedArray(R.array.default_colors);
         colors = new ArrayList<>();
         for (int i = 0; i < ta.length(); i++) {
             colors.add(new ColorPal(ta.getColor(i, 0), false));
@@ -579,7 +579,7 @@ public class ColorPicker {
         return this;
     }
 
-    private ColorPicker setMargin(int left, int top, int right, int bottom) {
+    private ColorPickerTab setMargin(int left, int top, int right, int bottom) {
         this.marginLeft = left;
         this.marginRight = right;
         this.marginTop = top;

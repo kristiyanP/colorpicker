@@ -1,5 +1,4 @@
-package petrov.kristiyan.colorpicker;
-
+package com.saggitt.colorpickerlib;
 
 public class ColorPal {
     private int color;

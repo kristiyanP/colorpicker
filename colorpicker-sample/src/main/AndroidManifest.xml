@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="petrov.kristiyan.colorpicker_sample">
+    package="com.saggitt.colorpickerlib_sample">
 
     <application
         android:name=".App"

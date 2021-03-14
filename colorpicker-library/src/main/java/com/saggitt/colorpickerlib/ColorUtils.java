@@ -1,4 +1,4 @@
-package petrov.kristiyan.colorpicker;
+package com.saggitt.colorpickerlib;
 
 import android.content.Context;
 import android.graphics.Color;
