@@ -224,8 +224,13 @@ public class ColorPicker {
             negativeButton.setVisibility(View.GONE);
         }
 
-        positiveButton.setText(positiveText);
-        negativeButton.setText(negativeText);
+        if (positiveButton.getText().toString().trim().isEmpty()) {
+            positiveButton.setText(positiveText);
+        }
+
+        if (negativeButton.getText().toString().trim().isEmpty()) {
+            negativeButton.setText(negativeText);
+        }
 
         positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
